@@ -1,0 +1,31 @@
+<?php $this->headLink()->appendStylesheet('/css/blog/index/view-post.css'); ?>
+
+<?php /** @var \Blog\Entity\Post $post */ ?>
+<?php $post = $this->post; ?>
+
+<?php $postedAt = $this->dateFormat(
+    $post->getCreated(),
+    IntlDateFormatter::MEDIUM, // Date
+    IntlDateFormatter::MEDIUM, // Time
+    'en_US'
+); ?>
+
+<div class="wrapper">
+    <div class="blog-post">
+        <h1><?php echo $this->escapeHtml($post->getTitle()); ?></h1>
+
+        <div class="meta">
+            <?php echo sprintf($this->translate('Posted on %s'), $postedAt); ?> |
+
+            <?php if ($author = $post->getAuthor()) : ?>
+                <?php echo sprintf($this->translate('Written by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?> |
+            <?php endif; ?>
+
+            <?php echo $this->escapeHtml($post->getCategory()->getName()); ?> |
+            <a href="<?php echo $this->url('edit', array('postId' => $post->getId())); ?>">edit</a> |
+            <a href="<?php echo $this->url('delete', array('postId' => $post->getId())); ?>">delete</a>
+        </div>
+        
+        <p><?php echo nl2br($this->escapeHtml($post->getContent())); ?></p>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<h1>Iniciar sesión</h1>
+
+<?php
+
+/** @var $form \User\Form\Login */
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+
+?>
+
+<div class="row">
+    <div>
+    <?php echo $this->formRow($form->get('email')); ?>
+    </div>
+
+<div>
+    <?php echo $this->formRow($form->get('password')); ?>
+</div>
+</div>
+
+<center> <?php echo $this->formSubmit($form->get('submit')); ?> </center>
+
+<?php echo $this->form()->closeTag(); ?>  
+    
+    
+    
+</div>

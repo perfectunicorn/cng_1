@@ -1,0 +1,100 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('Code needs girls')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                        ->prependStylesheet($this->basePath('css/materialize.min.css')) 
+                        ->prependStylesheet($this->basePath('css/index.css')) ?>
+        <link href="css/index.css" rel="stylesheet">
+         <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/materialize.min.js'))
+            ->prependFile($this->basePath('js/jquery.js'))    
+            //->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.min.js'))
+            //->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+            //->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
+        ; ?>
+        <script>
+            $(document).ready(function(){
+                $(".button-collapse").sideNav();
+            })
+        </script>
+
+    </head>
+
+    <?php $user = $this->identity(); ?>
+
+    <body>
+            <nav>
+                <div class="nav-wrapper">
+                            <a class="brand-logo left" href="<?php echo $this->url('home') ?>"> &nbsp;&nbsp;&nbsp;&nbsp;Code needs girls </a>
+                            <a href="#" class="button-collapse" data-activates="mobile-demo"><i class="material-icons">menu</i></a>
+                            <ul class="right hide-on-med-and-down"> 
+                                <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
+                                <li><a href="<?php echo $this->url('home') ?>">Blog</a></li>
+                                <li><a href="<?php echo $this->url('home') ?>">Cursos</a></li>
+                                <?php if ($user != null) : ?>
+                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
+                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                <?php else : ?>
+                                    <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Entrar') ?></a></li>
+                                    <!-- <?php echo $this->translate('You are not logged in.'); ?> -->
+                                <?php endif; ?>
+                            </ul>
+                            <ul class="side-nav" id="mobile-demo"> 
+                                <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
+                                <li><a href="<?php echo $this->url('home') ?>">Blog</a></li>
+                                <li><a href="<?php echo $this->url('home') ?>">Cursos</a></li>
+                                <?php if ($user != null) : ?>
+                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
+                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                <?php else : ?>
+                                    <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Entrar') ?></a></li>
+                                    <!-- <?php echo $this->translate('You are not logged in.'); ?> -->
+                                <?php endif; ?>
+                            </ul>
+                </div>
+            </nav>
+        <div class="container">
+            <div class="col s12">
+                
+            <?php
+
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                     &times;
+                 </button>
+                 <ul><li>')
+                ->setMessageSeparatorString('</li><li>')
+                ->setMessageCloseString('</li></ul></div>');
+
+            echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
+            echo $flash->render('info',    array('alert', 'alert-dismissible', 'alert-info'));
+            echo $flash->render('default', array('alert', 'alert-dismissible', 'alert-warning'));
+            echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
+
+            ?>
+
+            <?php echo $this->content; ?>
+            <hr>
+            <footer>
+                <p>&copy; <?php echo date('Y') ?> by Mandarina Tech. </p>
+            </footer>
+            </div>
+        </div> <!-- /container -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

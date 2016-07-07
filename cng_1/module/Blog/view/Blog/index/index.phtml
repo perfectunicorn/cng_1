@@ -1,0 +1,53 @@
+<?php $this->headLink()->appendStylesheet('/css/blog/index/index.css'); ?>
+
+<?php if (!empty($this->paginator)) : ?>
+    <div id="blog-posts">
+        <?php foreach ($this->paginator as $post) : ?>
+            <?php /** @var \Blog\Entity\Post $post */ ?>
+            <?php $postedAt = $this->dateFormat(
+                $post->getCreated(),
+                IntlDateFormatter::MEDIUM, // Date
+                IntlDateFormatter::MEDIUM, // Time
+                'en_US'
+            ); ?>
+
+            <div class="blog-post">
+                <h2>
+                    <a href="<?php echo $this->url('display-post', array('categorySlug' => $post->getCategory()->getSlug(), 'postSlug' => $post->getSlug())); ?>">
+                        <?php echo $this->escapeHtml($post->getTitle()); ?>
+                    </a>
+                </h2>
+
+                <div class="posted-at">
+                    <?php echo sprintf($this->translate('Posted on %s in the %s category.'), $postedAt, $this->escapeHtml($post->getCategory()->getName())); ?>
+
+                    <?php if ($author = $post->getAuthor()) : ?>
+                        <?php echo sprintf($this->translate('Written by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?>
+                    <?php endif; ?>
+                </div>
+
+                <p class="excerpt">
+                    <?php echo nl2br($this->escapeHtml($post->getContent())); ?>
+                </p>
+
+                <a href="<?php echo $this->url('display-post', array('categorySlug' => $post->getCategory()->getSlug(), 'postSlug' => $post->getSlug())); ?>">
+                    <?php echo $this->translate('Read more'); ?>
+                </a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="pagination-wrapper">
+        <?php
+
+        echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'partial/pagination',
+            array('route' => 'blog/paged'));
+
+        ?>
+    </div>
+
+<?php else : ?>
+    <p><?php echo $this->translate('There are currently no posts.'); ?></p>
+<?php endif; ?>

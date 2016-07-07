@@ -1,0 +1,8 @@
+<?php $user = $this->identity(); ?>
+<?php if ($user != null) : ?>
+    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
+    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+<?php else : ?>
+    <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Entrar') ?></a></li>
+    <!-- <?php echo $this->translate('You are not logged in.'); ?> -->
+<?php endif; ?>
