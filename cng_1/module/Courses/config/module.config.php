@@ -8,7 +8,7 @@ return array(
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
-            // using the path /blog/:controller/:action
+            // using the path /courses/:controller/:action
             'courses' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -54,14 +54,14 @@ return array(
             'display-course' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/courses/posts/:categorySlug/:postSlug',
+                    'route' => '/courses/courses/:categorySlug/:courseSlug',
                     'constraints' => array(
                         'categorySlug' => '[a-zA-Z0-9-]+',
-                        'postSlug' => '[a-zA-Z0-9-]+',
+                        'courseSlug' => '[a-zA-Z0-9-]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Index',
-                        'action' => 'viewPost',
+                        'action' => 'viewCourse',
                     ),
                 ),
             ),
@@ -102,19 +102,7 @@ return array(
         ),
     ),
 
-      'view_manager' => array(
-        'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
-        'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'layout/courses'=>__DIR__.'/../view/layout/courses.phtml',
-            'courses/index/index' => __DIR__ . '/../view/courses/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
+    'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),

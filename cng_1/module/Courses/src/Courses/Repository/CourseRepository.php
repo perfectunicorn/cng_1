@@ -26,11 +26,11 @@ interface CourseRepository extends RepositoryInterface
 
     /**
      * @param $categorySlug string
-     * @param $title string
+     * @param $courseSlug string
      *
      * @return Course|null
      */
-    public function find($categorySlug, $title);
+    public function find($categorySlug, $courseSlug);
 
     /**
      * @param $courseId int

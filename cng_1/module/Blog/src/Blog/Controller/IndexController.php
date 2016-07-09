@@ -4,10 +4,10 @@ namespace Blog\Controller;
 
 use Blog\Entity\Hydrator\CategoryHydrator;
 use Blog\Entity\Hydrator\PostHydrator;
-use Blog\Entity\Course;
+use Blog\Entity\Post;
 use Blog\Form\Add;
 use Blog\Form\Edit;
-use Blog\InputFilter\AddCourse;
+use Blog\InputFilter\AddPost;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
@@ -17,8 +17,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-       
-       return new ViewModel(array(
+        return new ViewModel(array(
             'paginator' => $this->getBlogService()->fetch($this->params()->fromRoute('page')),
         ));
     }

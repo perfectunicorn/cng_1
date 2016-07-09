@@ -20,25 +20,25 @@ class AddCourse extends InputFilter
         $title->setValidatorChain($this->getTitleValidatorChain());
         $title->setFilterChain($this->getStringTrimFilterChain());
 
-        $goal = new Input('goal');
-        $goal->setRequired(true);
-        $goal->setValidatorChain($this->getGoalValidatorChain());
-        $goal->setFilterChain($this->getStringTrimFilterChain());
+        $slug = new Input('slug');
+        $slug->setRequired(true);
+        $slug->setValidatorChain($this->getSlugValidatorChain());
+        $slug->setFilterChain($this->getStringTrimFilterChain());
 
-        $description = new Input('description');
-        $description->setRequired(true);
-        $description->setValidatorChain($this->getDescriptionValidatorChain());
-        $description->setFilterChain($this->getStringTrimFilterChain());
+        $content = new Input('content');
+        $content->setRequired(true);
+        $content->setValidatorChain($this->getContentValidatorChain());
+        $content->setFilterChain($this->getStringTrimFilterChain());
 
         $this->add($title);
-        $this->add($goal);
-        $this->add($description);
+        $this->add($slug);
+        $this->add($content);
     }
 
     /**
      * @return ValidatorChain
      */
-    protected function getDescriptionValidatorChain()
+    protected function getContentValidatorChain()
     {
         $stringLength = new StringLength();
         $stringLength->setMin(10);
@@ -51,16 +51,17 @@ class AddCourse extends InputFilter
     /**
      * @return ValidatorChain
      */
-      protected function getGoalValidatorChain()
+    protected function getSlugValidatorChain()
     {
         $stringLength = new StringLength();
-        $stringLength->setMin(10);
+        $stringLength->setMin(2);
+
         $validatorChain = new ValidatorChain();
+        $validatorChain->attach(new Regex("/^[a-z0-9\\-]+$/"));
         $validatorChain->attach($stringLength);
 
         return $validatorChain;
     }
-
 
     /**
      * @return ValidatorChain

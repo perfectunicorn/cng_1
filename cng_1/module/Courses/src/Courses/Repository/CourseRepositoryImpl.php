@@ -13,15 +13,17 @@ use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
 class CourseRepositoryImpl implements CourseRepository
 {
     use AdapterAwareTrait;
+ 
 
     public function save(Course $course, $authorId)
     {
+          
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
                 'title' => $course->getTitle(),
-                'goal' => $course->getGoal(),
-                'description' => $course->getDescription(),
+                'slug' => $course->getSlug(),
+                'content' => $course->getContent(),
                 'category_id' => $course->getCategory()->getId(),
                 'created' => time(),
                 'author_id' => $authorId,
@@ -39,8 +41,8 @@ class CourseRepositoryImpl implements CourseRepository
         $select->columns(array(
                 'id',
                 'title',
-                'goal',
-                'description',
+                'slug',
+                'content',
                 'created',
             ))
             ->from(array('p' => 'course'))
@@ -81,19 +83,19 @@ class CourseRepositoryImpl implements CourseRepository
 
     /**
      * @param $categorySlug string
-     * @param $title string
+     * @param $courseSlug string
      *
      * @return Course|null
      */
-    public function find($categorySlug, $title)
+    public function find($categorySlug, $courseSlug)
     {
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $select = $sql->select();
         $select->columns(array(
                 'id',
                 'title',
-                'goal',
-                'description',
+                'slug',
+                'content',
                 'created',
             ))
             ->from(array('p' => 'course'))
@@ -118,7 +120,7 @@ class CourseRepositoryImpl implements CourseRepository
             )
             ->where(array(
                 'c.slug' => $categorySlug,
-                'p.title' => $title,
+                'p.slug' => $courseSlug,
             ));
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -147,8 +149,8 @@ class CourseRepositoryImpl implements CourseRepository
         $select->columns(array(
             'id',
             'title',
-            'goal',
-            'description',
+            'slug',
+            'content',
             'created',
         ))
             ->from(array('p' => 'course'))
@@ -200,8 +202,8 @@ class CourseRepositoryImpl implements CourseRepository
         $insert = $sql->update('course')
             ->set(array(
                 'title' => $course->getTitle(),
-                'goal' => $course->getGoal(),
-                'description' => $course->getDescription(),
+                'slug' => $course->getSlug(),
+                'content' => $course->getContent(),
                 'category_id' => $course->getCategory()->getId(),
             ))
             ->where(array(

@@ -20,7 +20,6 @@
             <?php if ($author = $post->getAuthor()) : ?>
                 <?php echo sprintf($this->translate('Written by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?> |
             <?php endif; ?>
-
             <?php echo $this->escapeHtml($post->getCategory()->getName()); ?> |
             <a href="<?php echo $this->url('edit', array('postId' => $post->getId())); ?>">edit</a> |
             <a href="<?php echo $this->url('delete', array('postId' => $post->getId())); ?>">delete</a>

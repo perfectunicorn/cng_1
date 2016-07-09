@@ -23,8 +23,8 @@ class CourseHydrator implements HydratorInterface
         return array(
             'id' => $object->getId(),
             'title' => $object->getTitle(),
-            'goal' => $object->getGoal(),
-            'description' => $object->getDescription(),
+            'slug' => $object->getSlug(),
+            'content' => $object->getContent(),
             'created' => $object->getCreated(),
         );
     }
@@ -45,8 +45,8 @@ class CourseHydrator implements HydratorInterface
 
         $object->setId(isset($data['id']) ? intval($data['id']) : null);
         $object->setTitle(isset($data['title']) ? $data['title'] : null);
-        $object->setGoal(isset($data['goal']) ? $data['goal'] : null);
-        $object->setDescription(isset($data['description']) ? $data['description'] : null);
+        $object->setSlug(isset($data['slug']) ? $data['slug'] : null);
+        $object->setContent(isset($data['content']) ? $data['content'] : null);
         $object->setCreated(isset($data['created']) ? $data['created'] : null);
 
         return $object;

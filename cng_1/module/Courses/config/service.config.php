@@ -9,10 +9,10 @@ return array(
 
     'factories' => array(
         'Courses\Service\CoursesService' => function(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
-            $blogService = new \Courses\Service\CoursesServiceImpl();
-            $blogService->setCoursesRepository($serviceLocator->get('Courses\Repository\CourseRepository'));
+            $coursesService = new \Courses\Service\CoursesServiceImpl();
+            $coursesService->setCoursesRepository($serviceLocator->get('Courses\Repository\CourseRepository'));
 
-            return $blogService;
+            return $coursesService;
         },
     ),
 

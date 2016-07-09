@@ -25,16 +25,16 @@ interface CoursesService
 
     /**
      * @param $categorySlug string
-     * @param $title string
+     * @param $courseSlug string
      *
      * @return Course|null
      */
-    public function find($categorySlug, $title);
+    public function find($categorySlug, $courseSlug);
 
     /**
      * @param $courseId int
      *
-     * @return Course|null
+     * @return Post|null
      */
     public function findById($courseId);
 

@@ -17,12 +17,12 @@ class Course
     /**
      * @var string
      */
-    protected $goal;
+    protected $slug;
 
     /**
      * @var string
      */
-    protected $description;
+    protected $content;
 
     /**
      * @var int
@@ -42,35 +42,35 @@ class Course
 
 
     /**
-     * @param string $description
+     * @param string $content
      */
-    public function setDescription($description)
+    public function setContent($content)
     {
-        $this->description = $description;
+        $this->content = $content;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
+    public function getContent()
     {
-        return $this->description;
+        return $this->content;
     }
 
     /**
-     * @param string $goal
+     * @param string $slug
      */
-    public function setGoal($goal)
+    public function setSlug($slug)
     {
-        $this->goal = $goal;
+        $this->slug = $slug;
     }
 
     /**
      * @return string
      */
-    public function getGoal()
+    public function getSlug()
     {
-        return $this->goal;
+        return $this->slug;
     }
 
     /**
@@ -106,7 +106,7 @@ class Course
     }
 
     /**
-     * @param \Courses\Entity\Category $category
+     * @param \Blog\Entity\Category $category
      */
     public function setCategory(Category $category)
     {
@@ -114,7 +114,7 @@ class Course
     }
 
     /**
-     * @return \Courses\Entity\Category
+     * @return \Blog\Entity\Category
      */
     public function getCategory()
     {

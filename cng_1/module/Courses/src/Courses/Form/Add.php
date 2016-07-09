@@ -20,20 +20,20 @@ class Add extends Form
         $this->setHydrator($hydrator);
 
         $title = new Element\Text('title');
-        $title->setLabel('Title');
+        $title->setLabel('Título');
         $title->setAttribute('class', 'form-control');
 
-        $goal = new Element\Text('goal');
-        $goal->setLabel('Objetivo');
-        $goal->setAttribute('class', 'form-control');
+        $slug = new Element\Text('slug');
+        $slug->setLabel('Slug');
+        $slug->setAttribute('class', 'form-control');
 
-        $description = new Element\Textarea('description');
-        $description->setLabel('Descripción');
-        $description->setAttribute('class', 'form-control');
+        $content = new Element\Textarea('content');
+        $content->setLabel('Descripción');
+        $content->setAttribute('class', 'form-control');
 
         $category = new Element\Select('category_id');
-        $category->setLabel('Category');
-        $category->setAttribute('class', 'form-control');
+        $category->setLabel('Categoría');
+        $category->setAttribute('class', 'input-field');
         $category->setValueOptions(array(
             1 => 'Zend Framework',
             2 => 'PHP',
@@ -41,12 +41,12 @@ class Add extends Form
         ));
 
         $submit = new Element\Submit('submit');
-        $submit->setValue('crear curso');
+        $submit->setValue('Agregar curso');
         $submit->setAttribute('class', 'btn btn-primary');
 
         $this->add($title);
-        $this->add($goal);
-        $this->add($description);
+        $this->add($slug);
+        $this->add($content);
         $this->add($category);
         $this->add($submit);
     }

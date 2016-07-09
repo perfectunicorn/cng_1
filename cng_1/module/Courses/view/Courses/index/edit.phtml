@@ -1,0 +1,30 @@
+<h1>Edit a course</h1>
+
+<?php
+
+/** @var $form \Courses\Form\Add */
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+
+?>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('title')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('slug')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('content')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('category_id')); ?>
+</div>
+
+<?php echo $this->formHidden($form->get('id')); ?>
+<?php echo $this->formSubmit($form->get('submit')); ?>
+<?php echo $this->form()->closeTag(); ?>

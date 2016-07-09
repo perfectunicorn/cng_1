@@ -17,8 +17,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-       
-       return new ViewModel(array(
+        return new ViewModel(array(
             'paginator' => $this->getCoursesService()->fetch($this->params()->fromRoute('page')),
         ));
     }
@@ -26,7 +25,7 @@ class IndexController extends AbstractActionController
     public function addAction()
     {
         if (!$user = $this->identity()) {
-            $this->flashMessenger()->addErrorMessage('You must be logged in to add posts');
+            $this->flashMessenger()->addErrorMessage('You must be logged in to add courses');
             return $this->redirect()->toRoute('courses');
         }
 
@@ -34,23 +33,77 @@ class IndexController extends AbstractActionController
         $variables = array('form' => $form);
 
         if ($this->request->isPost()) {
-            $course = new Course();
-            $form->bind($course);
+            $blogPost = new Course();
+            $form->bind($blogPost);
             $form->setInputFilter(new AddCourse());
             $form->setData($this->request->getPost());
 
             if ($form->isValid()) {
-                $this->getCoursesService()->save($course, $user->id);
-                $this->flashMessenger()->addSuccessMessage('The post has been added!');
+                var_dump($blogPost);
+                $this->getCoursesService()->save($blogPost, $user->id);
+                
+                $this->flashMessenger()->addSuccessMessage('The course has been added!');
             }
         }
-
+        
         return new ViewModel($variables);
     }
 
-    
+    public function viewCourseAction()
+    {
+        $categorySlug = $this->params()->fromRoute('categorySlug');
+        $courseSlug = $this->params()->fromRoute('courseSlug');
+        $course = $this->getCoursesService()->find($categorySlug, $courseSlug);
+
+        if ($course == null) {
+            $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
+        }
+
+        return new ViewModel(array(
+            'course' => $course,
+        ));
+    }
+
+    public function editAction()
+    {
+        $form = new Edit();
+
+        if ($this->request->isPost()) {
+            $course = new Course();
+            $form->bind($course);
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+                $this->getCoursesService()->update($course);
+                $this->flashMessenger()->addSuccessMessage('The course has been updated!');
+            }
+        } else {
+            $course = $this->getCoursesService()->findById($this->params()->fromRoute('courseId'));
+
+            if ($course == null) {
+                $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
+            } else {
+                $form->bind($course);
+                $form->get('category_id')->setValue($course->getCategory()->getId());
+                $form->get('slug')->setValue($course->getSlug());
+                $form->get('id')->setValue($course->getId());
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+        ));
+    }
+
+    public function deleteAction()
+    {
+        $this->getCoursesService()->delete($this->params()->fromRoute('courseId'));
+        $this->flashMessenger()->addSuccessMessage('The course has been deleted!');
+        return $this->redirect()->toRoute('courses');
+    }
+
     /**
-     * @return \Courses\Service\CoursesService $blogService
+     * @return \Courses\Service\CoursesService $coursesService
      */
     protected function getCoursesService()
     {
