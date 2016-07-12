@@ -22,7 +22,7 @@ class Edit extends Form
         $id = new Element\Hidden('id');
 
         $title = new Element\Text('title');
-        $title->setLabel('Título');
+        $title->setLabel('Nombre del curso');
         $title->setAttribute('class', 'form-control');
 
         $slug = new Element\Text('slug');
@@ -43,7 +43,7 @@ class Edit extends Form
         ));
 
         $submit = new Element\Submit('submit');
-        $submit->setValue('Editar curso');
+        $submit->setValue('Crear curso');
         $submit->setAttribute('class', 'btn btn-primary');
 
         $this->add($id);

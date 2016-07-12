@@ -25,4 +25,12 @@ return array(
             },
         ),
     ),
+    
+    'doctrine' => array(
+        'migrations_configuration' => array(
+            'orm_default' => array(
+                'directory' => 'data/migrations',
+            ),
+        ),
+    ),
 );

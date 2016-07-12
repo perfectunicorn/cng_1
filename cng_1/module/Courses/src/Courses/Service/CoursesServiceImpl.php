@@ -3,6 +3,7 @@
 namespace Courses\Service;
 
 use Courses\Entity\Course;
+use Courses\Entity\Topic;
 
 class CoursesServiceImpl implements CoursesService
 {
@@ -91,4 +92,81 @@ class CoursesServiceImpl implements CoursesService
     {
         return $this->courseRepository;
     }
+    
+    /*
+     * Topic actions
+     * 
+     */
+    
+    /**
+     * Saves a topic
+     *
+     * @param Topic $topic
+     * @param int $authorId
+     *
+     * @return Topic
+     */
+    public function saveTopic(Topic $course, $authorId,$courseId)
+    {
+        $this->courseRepository->saveTopic($course, $authorId,$courseId);
+    }
+    
+       /**
+     * @param $categorySlug string
+     * @param $courseSlug string
+     *
+     * @return Course|null
+     */
+    public function findTopic($topicSlug)
+    {
+        return $this->courseRepository->findTopic($topicSlug);
+    }
+    
+       /**
+     * @param $page int
+     *
+     * @return \Zend\Paginator\Paginator
+     */
+    public function fetchTopics()
+    {
+        return $this->courseRepository->fetchTopics();
+    }
+    
+     public function fetchTopicsByCourse($courseId,$page)
+    {
+        return $this->courseRepository->fetchTopicsByCourse($courseId,$page);
+    }
+    
+ 
+    /**
+     * @param $courseId int
+     *
+     * @return Post|null
+     */
+    public function findTopicById($courseId)
+    {
+        return $this->courseRepository->findTopicById($topicId);
+    }
+
+    /**
+     * @param Course $course
+     *
+     * @return void
+     */
+    public function updateTopic(Topic $topic)
+    {
+        $this->courseRepository->updateTopic($topic);
+    }
+
+    /**
+     * @param $courseId int
+     *
+     * @return void
+     */
+    public function deleteTopic($topicId)
+    {
+        $this->courseRepository->deleteTopic($topicId);
+    }
+
+
 }

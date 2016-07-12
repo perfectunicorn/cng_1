@@ -1,0 +1,92 @@
+<?php $this->headLink()->appendStylesheet('/css/blog/index/view-post.css'); ?>
+<?php $this->headLink()->appendStylesheet('/css/materialize.css'); ?>
+<?php $this->headLink()->appendStylesheet('/css/index.css'); ?>
+
+<?php $user = $this->identity(); ?>
+
+<?php /** @var \Courses\Entity\Course $course */ ?>
+<?php $course = $this->course; ?>
+<?php $postedAt = $this->dateFormat(
+    $course->getCreated(),
+    IntlDateFormatter::MEDIUM, // Date
+    IntlDateFormatter::MEDIUM, // Time
+    'en_US'
+); ?>
+
+<div class="wrapper">
+    <div class="blog-post">
+        <h1><?php echo $this->escapeHtml($course->getTitle()); ?></h1>
+
+        <div class="meta">
+            <?php echo sprintf($this->translate('Created on %s'), $postedAt); ?> |
+
+            <?php if ($author = $course->getAuthor()) : ?>
+                <?php echo sprintf($this->translate('Created by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?> |
+            <?php endif; ?>
+            <?php echo 'Category: '.$this->escapeHtml($course->getCategory()->getName()); ?> |
+            
+            <?php if ($course->getAuthor()->getId()==$user->id) : ?>
+            <a href="<?php echo $this->url('add-topic', array('courseId' => $course->getId())); ?>">add a topic</a> |
+             <a href="<?php echo $this->url('edit', array('courseId' => $course->getId())); ?>">edit</a> |
+            <a href="<?php echo $this->url('delete', array('courseId' => $course->getId())); ?>">delete</a> 
+            <?php endif; ?>
+        </div>
+        
+        <p><?php echo ($course->getContent()); ?></p>
+    </div>
+    
+    <?php if (!empty($this->paginator)) : ?>
+    <div id="blog-posts">
+        <ul class="collapsible">
+              
+        <?php foreach ($this->paginator as $topic) : ?>
+            <?php /** @var \Courses\Entity\Course $course */ ?>
+            <?php $postedAt = $this->dateFormat(
+                $topic->getCreated(),
+                IntlDateFormatter::MEDIUM, // Date
+                IntlDateFormatter::MEDIUM, // Time
+                'en_US'
+            ); ?>
+            <li>
+            <div class="collapsible-header">
+                
+                    <a class="collapsible-header" href="<?php echo $this->url('display-topic', array('topicSlug' => $topic->getSlug())); ?>">
+                        <?php echo $this->escapeHtml($topic->getTitle()); ?>
+                    </a>
+
+                <div class="collapsible-body">
+                    <?php //echo sprintf($this->translate('Posted on %s in the %s category.'), $postedAt, $this->escapeHtml($topic->getCourse()->getTitle())); ?>
+
+                    <?php if ($author = $topic->getAuthor()) : ?>
+                    <span class="badge"><?php echo sprintf($this->translate('Written by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?>
+                    </span>
+                    <?php endif; ?>
+                
+
+               <!-- <p class="excerpt">
+                    <?php echo nl2br($this->escapeHtml($course->getContent())); ?>
+                </p> -->
+
+                <span class="badge"><a href="<?php echo $this->url('display-topic', array( 'topicSlug' => $topic->getSlug())); ?>">
+                    <?php echo $this->translate('Read more'); ?>
+                </a> </span> 
+            </div>
+        <?php endforeach; ?>
+    </div>
+    </li>
+    </ul>
+    </div>
+    <div class="pagination">
+        <?php
+
+        /*echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'partial/pagination',
+            array('route' => 'topics/paged'));*/
+
+        ?>
+    </div>
+
+<?php else : ?>
+    <p><?php echo $this->translate('There are currently no courses.'); ?></p>
+<?php endif; ?>

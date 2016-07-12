@@ -13,11 +13,14 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $this->layout('layout/user');
         return new ViewModel();
+       
     }
 
     public function addAction()
     {
+        $this->layout('layout/user');
         $form = new Add();
 
         if ($this->request->isPost()) {
@@ -29,7 +32,8 @@ class IndexController extends AbstractActionController
             if ($form->isValid()) {
                 $user->setUserGroup(UserService::GROUP_REGULAR);
                 $this->getUserService()->add($user);
-                $this->flashMessenger()->addSuccessMessage('The user has been added!');
+                $this->flashMessenger()->addSuccessMessage('Cuenta creada');
+                return $this->redirect()->toRoute('login');
             }
         }
 
@@ -40,9 +44,10 @@ class IndexController extends AbstractActionController
 
     public function loginAction()
     {
+        $this->layout('layout/user');
         if ($this->identity() != null) {
-            $this->flashMessenger()->addErrorMessage('You are already logged in!');
-            return $this->redirect()->toRoute('home');
+            $this->flashMessenger()->addInfoMessage('Bienvenido');
+            return $this->redirect()->toRoute('user');
         }
 
         $form = new Login();
@@ -56,9 +61,11 @@ class IndexController extends AbstractActionController
                 $loginResult = $this->getUserService()->login($data['email'], $data['password']);
 
                 if ($loginResult) {
-                    $this->flashMessenger()->addSuccessMessage('You have been logged in.');
+                    $this->flashMessenger()->addSuccessMessage('Bienvenido');
+                    return $this->redirect()->toRoute('user');
                 } else {
-                    $this->flashMessenger()->addWarningMessage('Invalid login credentials!');
+                    $this->flashMessenger()->addErrorMessage('Usuario o contraseña inválidos');
+                    return $this->redirect()->toRoute('login');
                 }
             }
         }
@@ -70,12 +77,13 @@ class IndexController extends AbstractActionController
 
     public function logoutAction()
     {
+        $this->layout('layout/user');
         /**
          * @var \Zend\Authentication\AuthenticationService $authenticationService
          */
         $authenticationService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
         $authenticationService->clearIdentity();
-        $this->flashMessenger()->addSuccessMessage('You have been logged out.');
+        $this->flashMessenger()->addSuccessMessage('Has cerrado sesión');
 
         return $this->redirect()->toRoute('login');
     }

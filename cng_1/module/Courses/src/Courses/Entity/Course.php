@@ -7,7 +7,7 @@ class Course
     /**
      * @var int
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string

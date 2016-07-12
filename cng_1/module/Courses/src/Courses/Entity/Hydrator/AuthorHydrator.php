@@ -3,6 +3,7 @@
 namespace Courses\Entity\Hydrator;
 
 use Courses\Entity\Course;
+use Courses\Entity\Topic;
 use User\Entity\User;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
@@ -17,7 +18,7 @@ class AuthorHydrator implements HydratorInterface
      */
     public function extract($object)
     {
-        if (!$object instanceof Course || $object->getAuthor() == null) {
+        if (!$object instanceof Course ||$object->getAuthor() == null) {
             return array();
         }
 

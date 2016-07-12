@@ -1,0 +1,37 @@
+<?php $this->headLink()->appendStylesheet('/css/blog/index/view-post.css'); ?>
+<?php $this->headLink()->appendStylesheet('/css/materialize.css'); ?>
+<?php $this->headLink()->appendStylesheet('/css/index.css'); ?>
+
+<?php /** @var \Courses\Entity\Course $course */ ?>
+<?php $topic = $this->topic; ?>
+<?php $user = $this->identity(); ?>
+
+
+<?php $postedAt = $this->dateFormat(
+    $topic->getCreated(),
+    IntlDateFormatter::MEDIUM, // Date
+    IntlDateFormatter::MEDIUM, // Time
+    'en_US'
+); ?>
+
+<div class="wrapper">
+    <div class="blog-post">
+    
+        <h1><?php echo $this->escapeHtml($topic->getTitle()); ?></h1>
+
+        <div class="meta">
+            <?php echo sprintf($this->translate('Posted on %s'), $postedAt); ?> |
+
+            <?php if ($author = $topic->getAuthor()) : ?>
+                <?php echo sprintf($this->translate('Written by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?> |
+            <?php endif; ?>
+            <?php if ($topic->getAuthor()->getId()==$user->id) : ?>    
+            <?php //echo $this->escapeHtml($topic->getCourse()->getTitle()); ?> 
+            <a href="<?php echo $this->url('edit-topic', array('topicId' => $topic->getId())); ?>">edit</a> |
+            <a href="<?php echo $this->url('delete-topic', array('topicId' => $topic->getId())); ?>">delete</a>
+         <?php endif; ?>
+        </div>
+        
+        <p><?php echo nl2br($this->escapeHtml($topic->getContent())); ?></p>
+    </div>
+</div>

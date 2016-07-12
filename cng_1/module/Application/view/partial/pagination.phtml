@@ -1,3 +1,16 @@
+  <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                        ->prependStylesheet($this->basePath('css/materialize.min.css')) 
+                        ->prependStylesheet($this->basePath('css/index.css')) ?>
+
+      <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/materialize.min.js'))
+            ->prependFile($this->basePath('js/jquery.js'))    
+            //->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.min.js'))
+            //->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+            //->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
+        ; ?>
+
 <?php if ($this->pageCount) : ?>
     <nav>
         <ul class="pagination">
@@ -19,7 +32,7 @@
             <!-- Numbered page links -->
             <?php foreach ($this->pagesInRange as $page) : ?>
                 <?php if ($page != $this->current) : ?>
-                    <li>
+                    <li class="waves-effect">
                         <a href="<?php echo $this->url($this->route, array('page' => $page)); ?>">
                             <?php echo $page; ?>
                         </a>

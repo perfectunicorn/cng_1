@@ -49,10 +49,12 @@ class UserServiceImpl implements UserService
         $authenticationAdapter->setIdentity($email);
         $authenticationAdapter->setCredential($password);
         $result = $authenticationService->authenticate();
+        
 
         if ($result->isValid()) {
             $identityObject = $authenticationAdapter->getResultRowObject(null, array('password'));
             $authenticationService->getStorage()->write($identityObject);
+            
 
             return true;
         }

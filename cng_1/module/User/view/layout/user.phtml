@@ -1,9 +1,9 @@
 <?php echo $this->doctype(); ?>
 
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('Company X')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('Code needs girls')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -12,69 +12,67 @@
 
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-            ->prependStylesheet($this->basePath('css/style.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
-
+                        ->prependStylesheet($this->basePath('css/materialize.min.css')) 
+                        ->prependStylesheet($this->basePath('css/index.css')) ?>
+        
         <!-- Scripts -->
         <?php echo $this->headScript()
-            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/materialize.min.js'))
+            ->prependFile($this->basePath('js/jquery.js'))    
+            //->prependFile($this->basePath('js/bootstrap.min.js'))
             ->prependFile($this->basePath('js/jquery.min.js'))
-            ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-            ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
+            //->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+            //->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
         ; ?>
+        <script>
+            $(document).ready(function(){
+                $(".button-collapse").sideNav();
+            })
+        </script>
 
     </head>
 
-    <?php $user = $this->identity(); ?>
-
-    <body style="background-color: #c2c2c2;">
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="col-xs-8">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="<?php echo $this->url('home') ?>">Company X</a>
-                    </div>
-
-                    <div class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav">
-                            <li><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                            <li><a href="<?php echo $this->url('blog') ?>"><?php echo $this->translate('Blog') ?></a></li>
-
-                            <?php if ($user != null) : ?>
-                                <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Log out') ?></a></li>
-                            <?php else : ?>
-                                <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Login') ?></a></li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
+    <?php $user = $this->identity();?>
+   
+    <body>
+            <nav>
+                <div class="nav-wrapper">
+                    <a class="brand-logo left" href="<?php echo $this->url('home') ?>"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Code needs girls </a>
+                            <a href="#" class="button-collapse" data-activates="mobile-demo"><i class="right material-icons">menu</i></a>
+                            <ul class="right hide-on-med-and-down"> 
+                                <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
+                                <li><a href="<?php echo $this->url('home') ?>">Quiénes sómos</a></li>
+                                <?php if ($user != null) : ?>
+                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
+                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                <?php else : ?>
+                                    <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Iniciar sesión') ?></a></li>
+                                    <li><a href="<?php echo $this->url('sign-up') ?>"><?php echo $this->translate('Únete ahora') ?></a></li>
+                                    <!-- <?php echo $this->translate('You are not logged in'); ?> -->
+                                <?php endif; ?>
+   
+                            </ul>
+                            <ul class="right side-nav" id="mobile-demo"> 
+                                 <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
+                                <li><a href="<?php echo $this->url('home') ?>">Quiénes somos</a></li>
+                                <?php if ($user != null) : ?>
+                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
+                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                <?php else : ?>
+                                   <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Iniciar sesión') ?></a></li>
+                                   <li><a href="<?php echo $this->url('sign-up') ?>"><?php echo $this->translate('Únete ahora') ?></a></li>
+                                    <!-- <?php echo $this->translate('You are not logged in'); ?> -->
+                                <?php endif; ?>
+                            </ul>
                 </div>
-
-                <div class="col-xs-4" id="logged-in-status">
-                    <?php if ($user != null) : ?>
-                        <?php echo sprintf($this->translate('You are logged in as %s %s'), $user->first_name, $user->last_name); ?>
-                    <?php else : ?>
-                        <?php echo $this->translate('You are not logged in.'); ?>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </nav>
+            </nav>
         <div class="container">
             <?php
 
             $flash = $this->flashMessenger();
-            $flash->setMessageOpenFormat('<div%s>
-                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                             &times;
-                         </button>
-                         <ul><li>')
-                ->setMessageSeparatorString('</li><li>')
-                ->setMessageCloseString('</li></ul></div>');
+            $flash->setMessageOpenFormat('<div> <script>Materialize.toast("')
+                ->setMessageSeparatorString('')
+                ->setMessageCloseString('", 4000)</script></div><div>');
 
             echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
             echo $flash->render('info',    array('alert', 'alert-dismissible', 'alert-info'));
@@ -82,13 +80,16 @@
             echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
 
             ?>
-
-            <?php echo $this->content; ?>
-            <hr>
-            <footer>
-                <p>&copy; <?php echo date('Y') ?> by Company X - <?php echo $this->translate('All rights reserved.') ?></p>
-            </footer>
-        </div> <!-- /container -->
-        <?php echo $this->inlineScript() ?>
+        </div>
+        
+        <div class="container">
+            <div class="col s12">
+                <?php echo $this->content; ?>
+            </div>
+            
+        </div>
     </body>
+    <footer class="footer-copyright">
+        <div><p class="center"><?php echo date('Y') ?> by Mandarina Tech.</p></div> 
+        </footer>  
 </html>

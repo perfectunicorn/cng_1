@@ -23,7 +23,7 @@ class Login extends \Zend\Form\Form
         ));
 
         $submit = new Element\Submit('submit');
-        $submit->setValue('Entrar');
+        $submit->setValue('Iniciar sesión');
         $submit->setAttribute('class', 'btn waves-effect waves-light btn');
 
         $this->add($email);

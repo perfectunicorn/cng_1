@@ -13,10 +13,10 @@ return array(
         'User',
         'Welcome',
         'Courses',
-        'Groups',
-        'Administra',
         'DoctrineModule',
+        'DoctrineORMModule',
         'DoctrineMongoODMModule',
+        
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -1,0 +1,8 @@
+web:
+    build: docker/.
+    ports:
+        - "8001:80"
+    volumes:
+        - ./:/var/www/html
+    environment:
+        VIRTUAL_HOST: chatter.dev

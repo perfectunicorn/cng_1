@@ -20,7 +20,7 @@ class Add extends Form
         $this->setHydrator($hydrator);
 
         $title = new Element\Text('title');
-        $title->setLabel('Title');
+        $title->setLabel('Título');
         $title->setAttribute('class', 'form-control');
 
         $slug = new Element\Text('slug');
@@ -28,11 +28,11 @@ class Add extends Form
         $slug->setAttribute('class', 'form-control');
 
         $content = new Element\Textarea('content');
-        $content->setLabel('Content');
+        $content->setLabel('Contenido');
         $content->setAttribute('class', 'form-control');
 
         $category = new Element\Select('category_id');
-        $category->setLabel('Category');
+        $category->setLabel('Categoría');
         $category->setAttribute('class', 'form-control');
         $category->setValueOptions(array(
             1 => 'PHP',
@@ -41,7 +41,7 @@ class Add extends Form
         ));
 
         $submit = new Element\Submit('submit');
-        $submit->setValue('Add Post');
+        $submit->setValue('Publicar');
         $submit->setAttribute('class', 'btn btn-primary');
 
         $this->add($title);

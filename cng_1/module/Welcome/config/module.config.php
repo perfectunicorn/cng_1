@@ -12,7 +12,7 @@ namespace Welcome;
 return array(
     'router' => array(
         'routes' => array(
-            'home' => array(
+            /*'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/',
@@ -21,7 +21,7 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
-            ),
+            ),*/
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -111,7 +111,7 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            //'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/welcome'=>__DIR__.'/../view/layout/welcome.phtml',
             'welcome/index/index' => __DIR__ . '/../view/welcome/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',

@@ -1,0 +1,33 @@
+<?php
+$this->headScript()->appendScript(
+        '$(function(){
+            $("#btnRefresh").click(function(event){
+            document.getElementById("messageListFrame").contentWindow.location.reload(true);    
+            })
+        });','text/javascript');
+
+$this->headStyle()->appendStyle(
+        '#userName { width:100 px; margin-top:10px;display:inline;}
+         #messageText { width:700 px; margin-top:10px;}  
+        ');
+?>
+
+<h3>Chat</h3>
+
+<iframe src="<?php echo $this->url('chat',array('action'=>'messageList'))?>" width="80%" height="400px" id="messageListFrame">
+</iframe>
+
+<?php
+
+    echo $this->form()->openTag($form);
+    echo '<label id="userName">'.$user.':</label>';
+    foreach ($form as $element){
+        echo $this->formElement($element);
+        // <--magic!
+        echo $this->formElementErrors($element);
+    }
+    echo $this->form()->closeTag();
+?>
+
+
+    

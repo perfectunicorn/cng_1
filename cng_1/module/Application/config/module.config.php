@@ -12,6 +12,7 @@ namespace Application;
 return array(
     'router' => array(
         'routes' => array(
+            
            /* 'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -22,6 +23,36 @@ return array(
                     ),
                 ),
             ),*/
+            
+            'sign-up' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/index/add',
+                    'constraints' => array(
+                        'categorySlug' => '[a-zA-Z0-9-]+',
+                        'postSlug' => '[a-zA-Z0-9-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'add',
+                    ),
+                ),
+            ),
+            
+            'sign-in' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/index/login',
+                    'constraints' => array(
+                        'categorySlug' => '[a-zA-Z0-9-]+',
+                        'postSlug' => '[a-zA-Z0-9-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'login',
+                    ),
+                ),
+            ),
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new

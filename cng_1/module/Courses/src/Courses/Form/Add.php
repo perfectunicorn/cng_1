@@ -20,7 +20,7 @@ class Add extends Form
         $this->setHydrator($hydrator);
 
         $title = new Element\Text('title');
-        $title->setLabel('Título');
+        $title->setLabel('Nombre del curso');
         $title->setAttribute('class', 'form-control');
 
         $slug = new Element\Text('slug');
@@ -41,7 +41,7 @@ class Add extends Form
         ));
 
         $submit = new Element\Submit('submit');
-        $submit->setValue('Agregar curso');
+        $submit->setValue('Crear curso');
         $submit->setAttribute('class', 'btn btn-primary');
 
         $this->add($title);
