@@ -39,14 +39,6 @@ class AddTopic extends Form
             'id'=>'topic_content'
         ));
 
-        $category = new Element\Select('category_id');
-        $category->setLabel('Categoría');
-        $category->setAttribute('class', 'input-field');
-        $category->setValueOptions(array(
-            1 => 'Zend Framework',
-            2 => 'PHP',
-            3 => 'MySQL',
-        ));
         
         $submit = new Element\Submit('submit');
         $submit->setValue('Crear tema');
@@ -56,7 +48,6 @@ class AddTopic extends Form
         $this->add($title);
         $this->add($slug);
         $this->add($content);
-        $this->add($category);
         $this->add($submit);
     }
 } 

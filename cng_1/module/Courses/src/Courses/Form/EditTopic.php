@@ -5,7 +5,7 @@ namespace Courses\Form;
 use Courses\Entity\Hydrator\CategoryHydrator;
 use Courses\Entity\Hydrator\CourseHydrator;
 use Courses\Entity\Hydrator\TopicHydrator;
-use Courses\Entity\Hydrator\UserHydrator;
+
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
@@ -25,26 +25,18 @@ class EditTopic extends Form
         $id = new Element\Hidden('id');
         $courseId = new Element\Hidden('courseId');
 
-        $title = new Element\Text('topic-title');
+        $title = new Element\Text('topic_title');
         $title->setLabel('Título del tema');
         $title->setAttribute('class', 'form-control');
 
-        $slug = new Element\Text('topic-slug');
+        $slug = new Element\Text('topic_slug');
         $slug->setLabel('Slug');
         $slug->setAttribute('class', 'form-control');
 
-        $content = new Element\Textarea('topic-content');
+        $content = new Element\Textarea('topic_content');
         $content->setLabel('Contenido');
         $content->setAttribute('class', 'form-control');
 
-        $category = new Element\Select('category_id');
-        $category->setLabel('Categoría');
-        $category->setAttribute('class', 'form-control');
-        $category->setValueOptions(array(
-            1 => 'Zend Framework',
-            2 => 'Zend Framework',
-            3 => 'MySQL',
-        ));
 
         $submit = new Element\Submit('submit');
         $submit->setValue('Crear tema');
@@ -55,7 +47,6 @@ class EditTopic extends Form
         $this->add($title);
         $this->add($slug);
         $this->add($content);
-        $this->add($category);
         $this->add($submit);
     }
 }

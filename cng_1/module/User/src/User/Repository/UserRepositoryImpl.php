@@ -3,8 +3,11 @@
 namespace User\Repository;
 
 use User\Entity\User;
+use User\Entity\Hydrator\UserHydrator;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Db\Adapter\AdapterAwareTrait;
+use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
 
 class UserRepositoryImpl implements UserRepository
 {
@@ -31,6 +34,55 @@ class UserRepositoryImpl implements UserRepository
 
         $statement = $sql->prepareStatementForSqlObject($insert);
         $statement->execute();
+    }
+    
+        public function findById($userId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'created',
+            'user_group'
+        ))
+            ->from(array('p' => 'user'))
+            /*->join(
+                array('c' => 'category'), // Table name
+                'c.id = p.category_id', // Condition
+                array('category_id' => 'id', 'name', 'category_slug' => 'slug'), // Columns
+                $select::JOIN_INNER
+            )
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.author_id',
+                array(
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )*/
+            ->where(array(
+                'p.id' => $userId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new UserHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new User());
+        $resultSet->initialize($results);
+
+        return ($resultSet->count() > 0 ? $resultSet->current() : null);
     }
 
     /**

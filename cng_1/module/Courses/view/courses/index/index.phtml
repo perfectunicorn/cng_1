@@ -4,40 +4,42 @@
 <?php if (!empty($this->paginator)) : ?>
 <div><p></p></div>
 <div id="row"> 
-    <div col s6 offset-s6>
+    <div col s12>
             <a href="<?php echo $this->url('add');?>">Crear un curso</a>
     </div>
-</div>            
+</div>  
+<div class="col s12">
     <div id="row">
-        <?php foreach ($this->paginator as $course) : ?>
+        <?php 
+          $x=0;
+            foreach ($this->paginator as $course) : ?>
             <?php /** @var \Courses\Entity\Course $course */ ?>
-            <?php $postedAt = $this->dateFormat(
+            <?php
+                $postedAt = $this->dateFormat(
                 $course->getCreated(),
                 IntlDateFormatter::MEDIUM, // Date
                 IntlDateFormatter::MEDIUM, // Time
                 'en_US'
             ); ?>
-
-            <div class="card">
-                <h2>
-                    <span class="card-title"> <a href="<?php echo $this->url('display-course', array('categorySlug' => $course->getCategory()->getSlug(), 'courseSlug' => $course->getSlug())); ?>">
-                        <?php echo $this->escapeHtml($course->getTitle()); ?>
-                    </a>
+        <div class="col s4 m4">
+            <div class="card small">
+                <div class="card-title">      
+                <span> <a href="<?php echo $this->url('display-course', array('categorySlug' => $course->getCategory()->getSlug(), 'courseSlug' => $course->getSlug())); ?>">
+                        <?php echo $this->escapeHtml($course->getTitle()); ?></a>
                     </span>
-                </h2>
-
-                <div class="posted-at">
+                </div>    
+                <!--<div class="posted-at">
                     <?php //echo sprintf($this->translate('Posted on %s in the %s category.'), $postedAt, $this->escapeHtml($course->getCategory()->getName())); ?>
 
                     <?php if ($author = $course->getAuthor()) : ?>
                         <?php echo sprintf($this->translate('Written by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?>
                     <?php endif; ?>
-                </div>
-
-                <p class="excerpt">
+                </div>-->
+                <div class="card-content">
+                <span>
                     <?php echo nl2br($this->escapeHtml($course->getContent())); ?>
-                </p>
-                
+                </span>
+                </div>
                 <div class="card-action">
                 Category:
                 <a href="<?php echo $this->url('display-course', array('categorySlug' => $course->getCategory()->getSlug(), 'courseSlug' => $course->getSlug())); ?>">
@@ -49,10 +51,13 @@
                 </a>
                 </div>
             </div>
+        </div>
         <?php endforeach; ?>
+    
+        <div>    
+</div>
     </div>
-
-    <div class="pagination-wrapper">
+    <div>
         <?php
 
         echo $this->paginationControl($this->paginator,
@@ -61,7 +66,9 @@
             array('route' => 'courses/paged'));
 
         ?>
+       
     </div>
+
 
 <?php else : ?>
     <p><?php echo $this->translate('There are currently no topics.'); ?></p>

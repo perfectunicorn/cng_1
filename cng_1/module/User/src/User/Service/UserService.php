@@ -14,6 +14,8 @@ interface UserService
      * @return void
      */
     public function add(User $user);
+    
+    public function findById($userId);
 
     /**
      * @return \Zend\Authentication\AuthenticationService

@@ -1,33 +1,41 @@
-<h1>Add User</h1>
-
 <?php
-
-/** @var $form \User\Form\Add */
-$form = $this->form;
-$form->prepare();
-echo $this->form()->openTag($form);
-
+$user = $this->member;
 ?>
+<?php $memberAt = $this->dateFormat(
+    $user->getCreated(),
+    IntlDateFormatter::MEDIUM, // Date
+    IntlDateFormatter::NONE, // Time
+    'en_US'
+); ?>
 
-<div class="form-group">
-    <?php echo $this->formRow($form->get('firstName')); ?>
-</div>
-
-<div class="form-group">
-    <?php echo $this->formRow($form->get('lastName')); ?>
-</div>
-
-<div class="form-group">
-    <?php echo $this->formRow($form->get('email')); ?>
-</div>
-
-<div class="form-group">
-    <?php echo $this->formRow($form->get('password')); ?>
-</div>
-
-<div class="form-group">
-    <?php echo $this->formRow($form->get('repeatPassword')); ?>
-</div>
-
-<?php echo $this->formSubmit($form->get('submit')); ?>
-<?php echo $this->form()->closeTag(); ?>
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="card-panel">
+                <center><img class="circle responsive-img" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->getId().'.png')?>">
+                <p class="card-title"><?php echo sprintf($user->getFirstName().' '.$user->getLastName());?></p>
+            </center><div class="card-content">
+                <ul>
+                    <li><?php echo sprintf('Correo electrónico:'); ?></li>
+                    <li><?php echo sprintf($user->getEmail()); ?></li>
+                    <li><?php echo sprintf('Miembro desde:'); ?></li>
+                    <li><?php echo sprintf($memberAt); ?></li>
+                    <li><a href="<?php echo $this->url('avatar')?>">Agregar avatar</a></li>
+                </ul>           
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m8">
+            <div class="card-panel">
+                <div class="card-title">
+                    <ul class="box valign-wrapper">
+                        <li><a  href="">Cursos</a></li>
+                        <li><a  href="">Proyectos</a></li> 
+                    </ul>
+                </div>
+                <div class=card-content">
+                    <span>Datos adicionales</span>
+                </div>
+          </div>
+        </div>
+      </div>
+     

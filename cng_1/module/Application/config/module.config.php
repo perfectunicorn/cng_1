@@ -53,6 +53,17 @@ return array(
                     ),
                 ),
             ),
+            
+            'about' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/application/index/about',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action' => 'about',
+                    ),
+                ),
+            ),
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new

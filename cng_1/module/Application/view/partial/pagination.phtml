@@ -12,8 +12,10 @@
         ; ?>
 
 <?php if ($this->pageCount) : ?>
-    <nav>
-        <ul class="pagination">
+<div class="centro">
+    <nav class="transparent z-depth-0">
+    
+        <ul class="pagination" >
             <!-- Previous page link -->
             <?php if (isset($this->previous)) : ?>
                 <li>
@@ -32,7 +34,7 @@
             <!-- Numbered page links -->
             <?php foreach ($this->pagesInRange as $page) : ?>
                 <?php if ($page != $this->current) : ?>
-                    <li class="waves-effect">
+                    <li>
                         <a href="<?php echo $this->url($this->route, array('page' => $page)); ?>">
                             <?php echo $page; ?>
                         </a>

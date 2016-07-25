@@ -16,10 +16,15 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        //$this->layout(null);
         $viewModel = new ViewModel();
         $viewModel->setTerminal(true);
 
     return $viewModel;
+    }
+
+    public function aboutAction()
+    {
+        return new ViewModel();
+
     }
 }

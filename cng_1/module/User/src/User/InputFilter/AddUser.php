@@ -88,7 +88,7 @@ class AddUser extends InputFilter
             'field' => 'email',
             'adapter' => $this->dbAdapter,
         ));
-        $emailDoesNotExist->setMessage('This e-mail address is already in use');
+        $emailDoesNotExist->setMessage('Ya existe un usuario registrado con esta cuenta');
 
         $validatorChain = new ValidatorChain();
         $validatorChain->attach($stringLength, true);
@@ -107,9 +107,10 @@ class AddUser extends InputFilter
     {
         $stringLength = new Validator\StringLength();
         $stringLength->setMin(6);
+        //$stringLength->setMessage('La contraseña debe ser mayor a 6 caracteres');
 
         $oneNumber = new Validator\Regex('/\d/');
-        $oneNumber->setMessage('Must contain at least one number');
+        $oneNumber->setMessage('La contraseña debe contener al menos un número');
 
         $validatorChain = new ValidatorChain();
         $validatorChain->attach($stringLength);
@@ -127,7 +128,7 @@ class AddUser extends InputFilter
     {
         $identical = new Validator\Identical();
         $identical->setToken('password'); // Name of the input whose value to match
-        $identical->setMessage('Passwords must match');
+        $identical->setMessage('Las contraseñas deben coincidir');
 
         $validatorChain = new ValidatorChain();
         $validatorChain->attach($identical);

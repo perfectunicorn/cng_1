@@ -143,7 +143,7 @@ class CoursesServiceImpl implements CoursesService
      *
      * @return Post|null
      */
-    public function findTopicById($courseId)
+    public function findTopicById($topicId)
     {
         return $this->courseRepository->findTopicById($topicId);
     }

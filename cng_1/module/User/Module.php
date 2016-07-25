@@ -5,6 +5,8 @@ namespace User;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\Validator\AbstractValidator;
+use Zend\Mvc\MvcEvent;
 
 class Module implements ConfigProviderInterface, ServiceProviderInterface, AutoloaderProviderInterface
 {
@@ -44,4 +46,26 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Autol
     {
         return include __DIR__ . '/config/service.config.php';
     }
+    
+    public function onBootstrap(MvcEvent $e)
+    {
+        date_default_timezone_set('America/Mexico_City');
+
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $translator = $serviceManager->get('translator');
+
+        //$locale = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        $locale = 'es_ES';
+        //$locale = 'en_US';
+
+        $translator->setLocale(\Locale::acceptFromHttp($locale));
+        $translator->addTranslationFile(
+            'phpArray',
+            'vendor/zendframework/zend-i18n-resources/languages/es/Zend_Validate.php',
+            'default',
+            'es_ES'
+        );
+        AbstractValidator::setDefaultTranslator($translator);
+    }
+    
 }

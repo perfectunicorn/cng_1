@@ -81,7 +81,7 @@ return array(
             ),
             
              'courses' => array(
-                'type' => 'Segment',
+                'type' => 'Literal',
                 'options' => array(
                     'route' => '/courses',
                     'defaults' => array(
@@ -112,25 +112,67 @@ return array(
                     ),
                 ),
             ),
+            
+               'profile' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/profile/:userId',
+                    'constraints' => array(
+                        'userId' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'profile',
+                    ),
+                ),
+            ),
+            
+              'upload' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/upload/:userId',
+                    'constraints' => array(
+                        'userId' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'upload',
+                    ),
+                ),
+            ),
+            
+             'avatar' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/avatar',
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Avatar',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            
         ),
     ),
 
     'controllers' => array(
         'invokables' => array(
-            'User\Controller\Index' => Controller\IndexController::class
+            'User\Controller\Index' => Controller\IndexController::class,
+            'User\Controller\Avatar' => Controller\AvatarController::class
         ),
     ),
 
       'view_manager' => array(
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
+        'display_exceptions'       => false,
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
             //'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/user'=>__DIR__.'/../view/layout/user.phtml',
-            'welcome/index/index' => __DIR__ . '/../view/welcome/index/index.phtml',
+            'user/index/index' => __DIR__ . '/../view/user/index/index.phtml',
+            'user/profile' => __DIR__ . '/../view/user/index/profile.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
@@ -145,4 +187,8 @@ return array(
             ),
         ),
     ),
+    
+    'module_config' => array(
+        'upload_location' => __DIR__ . '/data/uploads',
+  ),
 );

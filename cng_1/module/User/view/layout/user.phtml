@@ -1,6 +1,6 @@
 <?php echo $this->doctype(); ?>
 
-<html lang="es">
+<html lang="ES">
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle('Code needs girls')->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -11,7 +11,7 @@
         ?>
 
         <!-- Le styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/logo.png'))
                         ->prependStylesheet($this->basePath('css/materialize.min.css')) 
                         ->prependStylesheet($this->basePath('css/index.css')) ?>
         
@@ -26,41 +26,56 @@
         ; ?>
         <script>
             $(document).ready(function(){
-                $(".button-collapse").sideNav();
+                  $('.button-collapse').sideNav({
+                  menuWidth: 200, // Default is 240
+                  edge: 'right', // Choose the horizontal origin
+                  closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                }
+              );
             })
         </script>
-
     </head>
 
     <?php $user = $this->identity();?>
    
     <body>
-            <nav>
-                <div class="nav-wrapper">
-                    <a class="brand-logo left" href="<?php echo $this->url('home') ?>"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Code needs girls </a>
-                            <a href="#" class="button-collapse" data-activates="mobile-demo"><i class="right material-icons">menu</i></a>
-                            <ul class="right hide-on-med-and-down"> 
-                                <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
-                                <li><a href="<?php echo $this->url('home') ?>">Quiénes sómos</a></li>
+        <nav class="transparent z-depth-0">
+                <div class="nav-mobile">
+                    <a class="brand-logo left" style="padding-left:0.5em; padding-top:0.1em; padding-bottom:0.1em;" href="<?php echo $this->url('home') ?>"> <img src="<?php echo $this->basePath() . '/img/logo_cng_small.png' ?>"> </a>
+                            <a href="#" class="button-collapse right" data-activates="mobile-demo"><i class="material-icons teal-text" style="padding-right:0.1em;">menu</i></a>
+                            
+                            <ul class="right hide-on-med-and-down" style="padding-top:0.8em;"> 
+                                <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Home</a></li>
+                                <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Quiénes somos</a></li>
                                 <?php if ($user != null) : ?>
-                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
-                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                    <li> <a class="teal-text transparent" href="<?php echo $this->url('profile', array('userId' => $user->id)); ?>">
+                    <?php echo ($user->first_name); ?>
+                </a></li>
+                                 <?php if ($user->user_group ==2) : ?>
+                                    <li>
+                                        <a class="teal-text transparent" href="<?php echo $this->url('home'); ?>">
+                                            Administrar
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                
+                                    <li><a class="teal-text transparent" href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
                                 <?php else : ?>
-                                    <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Iniciar sesión') ?></a></li>
-                                    <li><a href="<?php echo $this->url('sign-up') ?>"><?php echo $this->translate('Únete ahora') ?></a></li>
+                                    <li><a class="teal-text transparent" href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Iniciar sesión') ?></a></li>
+                                    <li><a class="teal-text transparent" href="<?php echo $this->url('sign-up') ?>"><?php echo $this->translate('Únete ahora') ?></a></li>
                                     <!-- <?php echo $this->translate('You are not logged in'); ?> -->
                                 <?php endif; ?>
    
                             </ul>
                             <ul class="right side-nav" id="mobile-demo"> 
-                                 <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
-                                <li><a href="<?php echo $this->url('home') ?>">Quiénes somos</a></li>
+                                 <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Home</a></li>
+                                <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Quiénes somos</a></li>
                                 <?php if ($user != null) : ?>
-                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
-                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                    <li><a class="teal-text" href="<?php echo $this->url('profile',array('userId' => $user->id))   ?>"><?php echo ($user->first_name); ?></a></li>
+                                    <li><a class="teal-text" href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
                                 <?php else : ?>
-                                   <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Iniciar sesión') ?></a></li>
-                                   <li><a href="<?php echo $this->url('sign-up') ?>"><?php echo $this->translate('Únete ahora') ?></a></li>
+                                   <li><a class="teal-text" href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Iniciar sesión') ?></a></li>
+                                   <li><a class="teal-text" href="<?php echo $this->url('sign-up') ?>"><?php echo $this->translate('Únete ahora') ?></a></li>
                                     <!-- <?php echo $this->translate('You are not logged in'); ?> -->
                                 <?php endif; ?>
                             </ul>
@@ -83,6 +98,7 @@
         </div>
         
         <div class="container">
+            <br></br>
             <div class="col s12">
                 <?php echo $this->content; ?>
             </div>

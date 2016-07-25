@@ -79,7 +79,7 @@ class CourseRepositoryImpl implements CourseRepository
         $paginatorAdapter = new \Zend\Paginator\Adapter\DbSelect($select, $this->adapter, $resultSet);
         $paginator = new \Zend\Paginator\Paginator($paginatorAdapter);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage(5);
+        $paginator->setItemCountPerPage(1);
 
         return $paginator;
     }
@@ -415,7 +415,7 @@ class CourseRepositoryImpl implements CourseRepository
 
         $hydrator = new AggregateHydrator();
         $hydrator->add(new CourseHydrator());
-        $hydrator->add(new TopicyHydrator());
+        $hydrator->add(new TopicHydrator());
         $hydrator->add(new UserHydrator());
 
         $resultSet = new HydratingResultSet($hydrator, new Topic());
@@ -434,9 +434,9 @@ class CourseRepositoryImpl implements CourseRepository
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->update('topic')
             ->set(array(
-                'topic_title' => $topic->getTitle(),
-                'topic_slug' => $topic->getSlug(),
-                'topic_content' => $topic->getContent(),
+                'title' => $topic->getTitle(),
+                'slug' => $topic->getSlug(),
+                'content' => $topic->getContent(),
                 //'course_id' => $topic->getCourse()->getId(),
             ))
             ->where(array(
@@ -454,6 +454,7 @@ class CourseRepositoryImpl implements CourseRepository
      */
     public function deleteTopic($topicId)
     {
+        var_dump($topicId);
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $delete = $sql->delete()
             ->from('topic')

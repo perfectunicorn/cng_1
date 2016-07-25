@@ -1,9 +1,9 @@
 <?php echo $this->doctype(); ?>
 
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('STEMINISTAS')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('Code needs girls')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -11,14 +11,10 @@
         ?>
 
         <!-- Le styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/logo.png'))
                         ->prependStylesheet($this->basePath('css/materialize.min.css')) 
                         ->prependStylesheet($this->basePath('css/index.css')) ?>
-        <link href="css/index.css" rel="stylesheet">
-        <link href='https://fonts.googleapis.com/css?family=Coming+Soon' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-         <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
-
+        
         <!-- Scripts -->
         <?php echo $this->headScript()
             ->prependFile($this->basePath('js/materialize.min.js'))
@@ -36,50 +32,88 @@
 
     </head>
 
-    <?php $user = $this->identity(); ?>
+    <?php $user = $this->identity();?>
+   
     <body>
             <nav>
                 <div class="nav-wrapper">
-                    <a class="brand-logo left" href="<?php echo $this->url('home') ?>"> &nbsp;&nbsp;&nbsp;&nbsp;Code needs girls</a>
-                            <a href="#" class="button-collapse" data-activates="mobile-demo"><i class="material-icons">menu</i></a>
+                    <a class="brand-logo left" href="<?php echo $this->url('home') ?>"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Code needs girls </a>
+                        <a href="#" class="button-collapse" data-activates="mobile-demo">
+                            <i class="right material-icons">menu</i>
+                        </a>
                             <ul class="right hide-on-med-and-down"> 
-                                <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
-                                <li><a href="<?php echo $this->url('home') ?>">Quienes sómos</a></li>
+                                <li>
+                                    <a href="<?php echo $this->url('home') ?>">Home</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->url('about') ?>">Quiénes somos</a>
+                                </li>
                                 <?php if ($user != null) : ?>
-                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
-                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                    <li> <a href="<?php echo $this->url('profile', array('userId' => $user->id)); ?>"> 
+                                            <?php echo ($user->first_name); ?>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo $this->url('logout') ?>">
+                                            <?php echo $this->translate('Salir') ?>
+                                        </a>
+                                    </li>
                                 <?php else : ?>
-                                    <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Únete') ?></a></li>
-                                    <!-- <?php echo $this->translate('You are not logged in.'); ?> -->
+                                    <li>
+                                        <a href="<?php echo $this->url('login') ?>">
+                                            <?php echo $this->translate('Iniciar sesión') ?>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo $this->url('sign-up') ?>">
+                                            <?php echo $this->translate('Únete ahora') ?>
+                                        </a>
+                                    </li>
+                                    <!-- <?php echo $this->translate('You are not logged in'); ?> -->
                                 <?php endif; ?>
    
                             </ul>
                             <ul class="right side-nav" id="mobile-demo"> 
-                                 <li><a href="<?php echo $this->url('home') ?>">Home</a></li>
-                                <li><a href="<?php echo $this->url('home') ?>">Quienes sómos</a></li>
+                                 <li>
+                                     <a href="<?php echo $this->url('home') ?>">Home</a>
+                                 </li>
+                                <li>
+                                    <a href="<?php echo $this->url('home') ?>">Quiénes somos</a>
+                                </li>
                                 <?php if ($user != null) : ?>
-                                    <li><a href="<?php echo $this->url('home')   ?>"><?php echo ($user->first_name); ?></a></li>
-                                    <li><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
+                                    <li>
+                                        <a href="<?php echo $this->url('home')   ?>">
+                                            <?php echo ($user->first_name); ?>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo $this->url('logout') ?>">
+                                            <?php echo $this->translate('Salir') ?>
+                                        </a>
+                                    </li>
                                 <?php else : ?>
-                                   <li><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Únete') ?></a></li>
-                                    <!-- <?php echo $this->translate('You are not logged in.'); ?> -->
+                                   <li>
+                                       <a href="<?php echo $this->url('login') ?>">
+                                           <?php echo $this->translate('Iniciar sesión') ?>
+                                       </a>
+                                   </li>
+                                   <li>
+                                       <a href="<?php echo $this->url('sign-up') ?>">
+                                           <?php echo $this->translate('Únete ahora') ?>
+                                       </a>
+                                   </li>
+                                    <!-- <?php echo $this->translate('You are not logged in'); ?> -->
                                 <?php endif; ?>
                             </ul>
                 </div>
             </nav>
         <div class="container">
-            <div class="col s12">
-                
             <?php
 
             $flash = $this->flashMessenger();
-            $flash->setMessageOpenFormat('<div%s>
-                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                     &times;
-                 </button>
-                 <ul><li>')
-                ->setMessageSeparatorString('</li><li>')
-                ->setMessageCloseString('</li></ul></div>');
+            $flash->setMessageOpenFormat('<div> <script>Materialize.toast("')
+                ->setMessageSeparatorString('')
+                ->setMessageCloseString('", 4000)</script></div><div>');
 
             echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
             echo $flash->render('info',    array('alert', 'alert-dismissible', 'alert-info'));
@@ -87,14 +121,16 @@
             echo $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
 
             ?>
-
-            <?php echo $this->content; ?>
-            <hr>
-            <footer>
-                <p>&copy; <?php echo date('Y') ?> by Mandarina Tech. </p>
-            </footer>
+        </div>
+        
+        <div class="container">
+            <div class="col s12">
+                <?php echo $this->content; ?>
             </div>
-        </div> <!-- /container -->
-        <?php echo $this->inlineScript() ?>
+            
+        </div>
     </body>
+    <footer class="footer-copyright">
+        <div><p class="center"><?php echo date('Y') ?> by Mandarina Tech.</p></div> 
+        </footer>  
 </html>

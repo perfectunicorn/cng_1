@@ -14,6 +14,8 @@ interface UserRepository extends RepositoryInterface
      */
     public function add(User $user);
 
+    public function findById($userId);
+    
     /**
      * @param string $clearTextPassword
      *

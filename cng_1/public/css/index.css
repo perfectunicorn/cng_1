@@ -54,3 +54,15 @@ h1
     
 }
  
+centro{
+    display:table-cell;
+    vertical-align:middle;
+    
+}
+
+a:hover {
+  color: purple;
+  background-color: transparent;
+  text-decoration: underline;
+}
+

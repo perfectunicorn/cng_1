@@ -143,7 +143,7 @@ class IndexController extends AbstractActionController
                 //var_dump($blogPost);
                 $course = $this->getCoursesService()->findById($this->params()->fromRoute('courseId'));
                 $this->getCoursesService()->saveTopic($blogPost, $user->id,$course->id);
-                $this->flashMessenger()->addSuccessMessage('The course has been added!');
+                $this->flashMessenger()->addSuccessMessage('The topic has been added!');
             }
         }else {
             $course = $this->getCoursesService()->findById($this->params()->fromRoute('courseId'));
@@ -167,21 +167,25 @@ class IndexController extends AbstractActionController
             $topic = new Topic();
             $form->bind($topic);
             $form->setData($this->request->getPost());
-
+                        
             if ($form->isValid()) {
-                $this->getCoursesService()->update($topic);
-                $this->flashMessenger()->addSuccessMessage('The course has been updated!');
+                $this->getCoursesService()->updateTopic($topic);
+                $this->flashMessenger()->addSuccessMessage('The topic has been updated!');
             }
         } else {
-            $topic = $this->getCoursesService()->findById($this->params()->fromRoute('topicId'));
-
+            
+            $topic = $this->getCoursesService()->findTopicById($this->params()->fromRoute('topicId'));
+             var_dump($topic);
             if ($topic == null) {
                 $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
             } else {
                 $form->bind($topic);
-                $form->get('category_id')->setValue($topic->getCategory()->getId());
-                $form->get('slug')->setValue($topic->getSlug());
                 $form->get('id')->setValue($topic->getId());
+                $form->get('topic_title')->setValue($topic->getTitle());
+                $form->get('topic_slug')->setValue($topic->getSlug());
+                $form->get('topic_content')->setValue($topic->getContent());
+                //$form->get('course_id')->setValue($topic->getCourse()->getId());
+
             }
         }
 
@@ -193,8 +197,8 @@ class IndexController extends AbstractActionController
     public function deleteTopicAction()
     {
         $this->layout('layout/courses');
-        $this->getCoursesService()->delete($this->params()->fromRoute('topicId'));
-        $this->flashMessenger()->addSuccessMessage('The course has been deleted!');
+        $this->getCoursesService()->deleteTopic($this->params()->fromRoute('topicId'));
+        $this->flashMessenger()->addSuccessMessage('The topic has been deleted!');
         return $this->redirect()->toRoute('courses');
     }
     

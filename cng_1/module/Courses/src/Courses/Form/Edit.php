@@ -38,7 +38,7 @@ class Edit extends Form
         $category->setAttribute('class', 'form-control');
         $category->setValueOptions(array(
             1 => 'Zend Framework',
-            2 => 'Zend Framework',
+            2 => 'PHP',
             3 => 'MySQL',
         ));
 

@@ -23,9 +23,14 @@ return array(
                 $userService = $serviceLocator->get('User\Service\UserService');
                 return $userService->getAuthenticationService();
             },
+           // 'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ),
+                    
+        /*'aliases' => array(
+            'translator' => 'MvcTranslator',
+        ),  */         
     ),
-    
+                         
     'doctrine' => array(
         'migrations_configuration' => array(
             'orm_default' => array(
