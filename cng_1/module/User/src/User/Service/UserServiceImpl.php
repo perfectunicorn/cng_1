@@ -23,11 +23,26 @@ class UserServiceImpl implements UserService
         $this->userRepository->add($user);
     }
     
+     /**
+     * @param User $user
+     *
+     * @return void
+     */
+    public function update(User $user)
+    {
+        $this->userRepository->update($user);
+    }
+    
+    
      public function findById($userId)
     {
         return $this->userRepository->findById($userId);
     }
-
+    
+    public function findByNickname($userId)
+    {
+        return $this->userRepository->findByNickname($userId);
+    }
     /**
      * @return \Zend\Authentication\AuthenticationService
      */

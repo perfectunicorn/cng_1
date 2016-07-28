@@ -29,6 +29,8 @@ class UserRepositoryImpl implements UserRepository
                 'password' => $this->generatePassword($user->getPassword()),
                 'created' => time(),
                 'user_group' => $user->getUserGroup(),
+                'nickname' => $user->getNickname(),
+                'gender' => $user->getGender(),
             ))
             ->into('user');
 
@@ -36,7 +38,26 @@ class UserRepositoryImpl implements UserRepository
         $statement->execute();
     }
     
-        public function findById($userId)
+    public function update(User $user)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->update('user')
+            ->set(array(
+                'first_name' => $user->getFirstName(),
+                'last_name' => $user->getLastName(),
+                'gender' => $user->getGender(),
+                'age' => $user->getAge(),
+                'bio' => $user->getBio(),
+            ))
+            ->where(array(
+                'id' => $user->getId(),
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute();
+    }
+    
+    public function findById($userId)
     {
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $select = $sql->select();
@@ -47,7 +68,11 @@ class UserRepositoryImpl implements UserRepository
             'email',
             'password',
             'created',
-            'user_group'
+            'user_group',
+            'nickname',
+            'gender',
+            'age',
+            'bio'
         ))
             ->from(array('p' => 'user'))
             /*->join(
@@ -71,6 +96,60 @@ class UserRepositoryImpl implements UserRepository
             )*/
             ->where(array(
                 'p.id' => $userId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new UserHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new User());
+        $resultSet->initialize($results);
+
+        return ($resultSet->count() > 0 ? $resultSet->current() : null);
+    }
+
+    
+    public function findByNickname($userId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'created',
+            'user_group',
+            'nickname',
+            'gender',
+            'age',
+            'bio'
+        ))
+            ->from(array('p' => 'user'))
+            /*->join(
+                array('c' => 'category'), // Table name
+                'c.id = p.category_id', // Condition
+                array('category_id' => 'id', 'name', 'category_slug' => 'slug'), // Columns
+                $select::JOIN_INNER
+            )
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.author_id',
+                array(
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )*/
+            ->where(array(
+                'p.nickname' => $userId,
             ));
 
         $statement = $sql->prepareStatementForSqlObject($select);

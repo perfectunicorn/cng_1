@@ -47,12 +47,18 @@ class AddUser extends InputFilter
         $repeatPassword->setRequired(true);
         $repeatPassword->setValidatorChain($this->getRepeatPasswordValidatorChain());
         $repeatPassword->setFilterChain($this->getStringTrimFilterChain());
+        
+        $nickname = new Input('nickname');
+        $nickname->setRequired(true);
+        $nickname->setValidatorChain($this->getNicknameValidatorChain());
+        $nickname->setFilterChain($this->getStringTrimFilterChain());
 
         $this->add($firstName);
         $this->add($lastName);
         $this->add($email);
         $this->add($password);
         $this->add($repeatPassword);
+        $this->add($nickname);
     }
 
     /**
@@ -81,7 +87,7 @@ class AddUser extends InputFilter
     protected function getEmailValidatorChain()
     {
         $stringLength = new Validator\StringLength();
-        $stringLength->setMax(50);
+        $stringLength->setMax(100);
 
         $emailDoesNotExist = new Validator\Db\NoRecordExists(array(
             'table' => 'user',
@@ -107,6 +113,7 @@ class AddUser extends InputFilter
     {
         $stringLength = new Validator\StringLength();
         $stringLength->setMin(6);
+        $stringLength->setMax(50);
         //$stringLength->setMessage('La contraseña debe ser mayor a 6 caracteres');
 
         $oneNumber = new Validator\Regex('/\d/');
@@ -146,4 +153,44 @@ class AddUser extends InputFilter
 
         return $filterChain;
     }
+    
+    /**
+     * Gets the validation chain for the nickname input
+     *
+     * @return ValidatorChain
+     */
+    protected function getNicknameValidatorChain()
+    {
+        $stringLength = new Validator\StringLength();
+        $stringLength->setMin(5);
+        $stringLength->setMax(50);
+
+        $nicknameDoesNotExist = new Validator\Db\NoRecordExists(array(
+            'table' => 'user',
+            'field' => 'nickname',
+            'adapter' => $this->dbAdapter,
+        ));
+        $nicknameDoesNotExist->setMessage('Ya existe una cuenta con este nombre de usuario');
+
+        $validatorChain = new ValidatorChain();
+        $validatorChain->attach($stringLength, true);
+        $validatorChain->attach($nicknameDoesNotExist, true);
+
+        return $validatorChain;
+    }
+    
+            /*
+         * 
+         * $validator = new Zend\Validator\Db\NoRecordExists(
+    array(
+        'table' => 'users',
+        'field' => 'username',
+        'exclude' => array(
+            'field' => 'id',
+            'value' => $user_id
+        )
+    )
+);
+         */
+
 } 

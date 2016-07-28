@@ -5,11 +5,11 @@ namespace User\Form;
 use Zend\Form\Element;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
-class Add extends \Zend\Form\Form
+class AddEducation extends \Zend\Form\Form
 {
     public function __construct()
     {
-        parent::__construct('add-user');
+        parent::__construct('add-education');
         $this->setHydrator(new ClassMethods());
 
         $firstName = new Element\Text('firstName');

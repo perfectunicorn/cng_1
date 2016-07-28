@@ -8,19 +8,38 @@ $user = $this->member;
     'en_US'
 ); ?>
 
+
       <div class="row">
         <div class="col s12 m4">
-          <div class="card-panel">
+          <div class="card-panel z-depth-1">
                 <center><img class="circle responsive-img" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->getId().'.png')?>">
                 <p class="card-title"><?php echo sprintf($user->getFirstName().' '.$user->getLastName());?></p>
             </center><div class="card-content">
+                <ul class="collapsible z-depth-0" data-collapsible="accordion">
+                    <li>
+                        <div class="collapsible-header"><?php echo sprintf('Más sobre mi'); ?></div>
+                        <div class="collapsible-body">
+                            <?php echo sprintf($user->getBio()); ?>
+                            <?php echo sprintf('Edad');?>
+                            <?php echo sprintf($user->getAge()); ?>
+                            <?php echo sprintf('Miembro desde:'); ?>
+                            <?php echo sprintf($memberAt); ?>
+                        </div>
+
+                    </li>
+                    <li>
+                         <div class="collapsible-header"><?php echo sprintf('Contacto'); ?></div>
+                         <div class="collapsible-body">
+                             <?php echo sprintf('Correo electrónico'); ?>
+                            <?php echo sprintf($user->getEmail()); ?>
+                         </div>
+                    </li>
+                   
+                </ul>         
                 <ul>
-                    <li><?php echo sprintf('Correo electrónico:'); ?></li>
-                    <li><?php echo sprintf($user->getEmail()); ?></li>
-                    <li><?php echo sprintf('Miembro desde:'); ?></li>
-                    <li><?php echo sprintf($memberAt); ?></li>
+                    <li><a href="<?php echo $this->url('edit-info',array('nickname' => $user->getNickname()))?>">Editar información básica</a></li>
                     <li><a href="<?php echo $this->url('avatar')?>">Agregar avatar</a></li>
-                </ul>           
+                </ul>
             </div>
           </div>
         </div>

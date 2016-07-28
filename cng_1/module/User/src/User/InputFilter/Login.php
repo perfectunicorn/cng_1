@@ -33,7 +33,7 @@ class Login extends InputFilter
     protected function getEmailValidatorChain()
     {
         $stringLength = new Validator\StringLength();
-        $stringLength->setMax(50);
+        $stringLength->setMax(100);
 
         $validatorChain = new Validator\ValidatorChain();
         $validatorChain->attach($stringLength, true);

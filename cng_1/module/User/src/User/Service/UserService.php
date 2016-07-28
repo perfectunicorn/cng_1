@@ -15,7 +15,11 @@ interface UserService
      */
     public function add(User $user);
     
+    public function update(User $user);
+    
     public function findById($userId);
+    
+    public function findByNickname($userId);
 
     /**
      * @return \Zend\Authentication\AuthenticationService

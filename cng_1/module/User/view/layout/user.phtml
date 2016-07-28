@@ -34,6 +34,18 @@
               );
             })
         </script>
+        
+        
+        <script>
+             
+  $(document).ready(function(){
+    $('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+  });
+
+        </script>
+
     </head>
 
     <?php $user = $this->identity();?>
@@ -48,7 +60,7 @@
                                 <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Home</a></li>
                                 <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Quiénes somos</a></li>
                                 <?php if ($user != null) : ?>
-                                    <li> <a class="teal-text transparent" href="<?php echo $this->url('profile', array('userId' => $user->id)); ?>">
+                                    <li> <a class="teal-text transparent" href="<?php echo $this->url('profile', array('nickname' => $user->nickname)); ?>">
                     <?php echo ($user->first_name); ?>
                 </a></li>
                                  <?php if ($user->user_group ==2) : ?>
@@ -71,7 +83,7 @@
                                  <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Home</a></li>
                                 <li><a class="teal-text" href="<?php echo $this->url('home') ?>">Quiénes somos</a></li>
                                 <?php if ($user != null) : ?>
-                                    <li><a class="teal-text" href="<?php echo $this->url('profile',array('userId' => $user->id))   ?>"><?php echo ($user->first_name); ?></a></li>
+                                    <li><a class="teal-text" href="<?php echo $this->url('profile',array('nickname' => $user->nickname))   ?>"><?php echo ($user->first_name); ?></a></li>
                                     <li><a class="teal-text" href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Salir') ?></a></li>
                                 <?php else : ?>
                                    <li><a class="teal-text" href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Iniciar sesión') ?></a></li>

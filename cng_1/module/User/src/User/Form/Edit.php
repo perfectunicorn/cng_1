@@ -5,13 +5,15 @@ namespace User\Form;
 use Zend\Form\Element;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
-class Add extends \Zend\Form\Form
+class Edit extends \Zend\Form\Form
 {
     public function __construct()
     {
-        parent::__construct('add-user');
+        parent::__construct('edit-user');
         $this->setHydrator(new ClassMethods());
 
+        $id = new Element\Hidden('id');
+        
         $firstName = new Element\Text('firstName');
         $firstName->setLabel('Nombre(s)');
         $firstName->setAttribute('class', 'form-control');
@@ -28,33 +30,24 @@ class Add extends \Zend\Form\Form
             0 => 'Masculino',
         ));
         
-        $nickName = new Element\Text('nickname');
-        $nickName->setLabel('Nombre de usuario');
-        $nickName->setAttribute('class', 'form-control');
-
-        $email = new Element\Email('email');
-        $email->setLabel('Correo electrónico');
-        $email->setAttribute('class', 'form-control');
-
-        $password = new Element\Password('password');
-        $password->setLabel('Contraseña');
-        $password->setAttribute('class', 'form-control');
-
-        $repeatPassword = new Element\Password('repeatPassword');
-        $repeatPassword->setLabel('Repetir contraseña');
-        $repeatPassword->setAttribute('class', 'form-control');
+        $age = new Element\Text('age');
+        $age->setLabel('Edad');
+        $age->setAttribute('class', 'form-control');
+        
+        $bio = new Element\Text('bio');
+        $bio->setLabel('Biografía');
+        $bio->setAttribute('class', 'form-control');
 
         $submit = new Element\Submit('submit');
-        $submit->setValue('Abrir una cuenta');
+        $submit->setValue('Guardar');
         $submit->setAttribute('class', 'btn btn-primary');
 
+        $this->add($id);
         $this->add($firstName);
         $this->add($lastName);
         $this->add($gender);
-        $this->add($nickName);
-        $this->add($email);
-        $this->add($password);
-        $this->add($repeatPassword);
+        $this->add($age);
+        $this->add($bio);
         $this->add($submit);
     }
 } 

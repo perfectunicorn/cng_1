@@ -38,8 +38,27 @@ class User
      * @var int
      */
     protected $userGroup;
+    
+     /**
+     * @var string
+     */
+    protected $nickname;
 
-
+    /**
+     * @var int
+     */
+    protected $gender;
+    
+    
+    /**
+     * @var int
+     */
+    protected $age;
+    
+    /**
+     * @var string
+     */
+    protected $bio;
 
     /**
      * @param int $created
@@ -152,4 +171,69 @@ class User
     {
         return $this->userGroup;
     }
+    
+        /**
+     * @param string $nickname
+     */
+    public function setNickname($nickname)
+    {
+        $this->nickname = $nickname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNickname()
+    {
+        return $this->nickname;
+    }
+
+    /**
+     * @param int $gender
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+    
+     /**
+     * @param int $age
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
+    
+    /**
+     * @param string $bio
+     */
+    public function setBio($bio)
+    {
+        $this->bio = $bio;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
 } 

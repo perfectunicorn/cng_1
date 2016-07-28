@@ -4,6 +4,7 @@ namespace User\Controller;
 
 use User\Entity\User;
 use User\Form\Add;
+use User\Form\Edit;
 use User\Form\Login;
 use User\Form\fileUpload;
 use User\Service\UserService;
@@ -43,7 +44,122 @@ class IndexController extends AbstractActionController
             'form' => $form,
         ));
     }
+    
+    /*
+     * Edit basic info: first name, last name, age, gender & bio
+     */
+    public function editAction()
+    {
+       $this->layout('layout/user');
+        $form = new Edit();
 
+        if ($this->request->isPost()) {
+            $user = new User();
+            $form->bind($user);
+            $form->setData($this->request->getPost());
+            
+
+            if ($form->isValid()) {
+                $this->getUserService()->update($user);
+                $nickname=$this->getUserService()->findByNickname($this->params()->fromRoute('nickname'));
+                $this->flashMessenger()->addSuccessMessage('Información de usuario actualizada');
+                return $this->redirect()->toRoute('profile',array('nickname'=>$nickname->getNickname()));
+            }
+        } else {
+            $user = $this->getUserService()->findByNickname($this->params()->fromRoute('nickname'));
+
+            if ($user == null) {
+                $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
+            } else {
+                $form->bind($user);
+                $form->get('firstName')->setValue($user->getFirstName());
+                $form->get('lastName')->setValue($user->getLastName());
+                $form->get('gender')->setValue($user->getGender());
+                $form->get('age')->setValue($user->getAge());
+                $form->get('bio')->setValue($user->getBio());
+                $form->get('id')->setValue($user->getId());
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+        )); 
+    }
+    
+    /*
+     * Edit user role
+     */
+    public function editRoleAction()
+    {
+        
+    }
+     
+    /*
+     *  Delete user account
+     *  Only Admin's role, for now
+     */
+    public function deleteAction()
+    {
+        
+    }
+    
+    /*
+     * Education options
+     */
+    public function addEducationAction()
+    {
+        
+    }
+    
+    public function editEducationAction()
+    {
+        
+    }
+    
+    public function deleteEducationAction()
+    {
+        
+    }
+    
+    /*
+     * Career options
+     */
+    public function addJobAction()
+    {
+        
+    }
+    
+    public function editJobAction()
+    {
+        
+    }
+    
+    public function deleteJobAction()
+    {
+        
+    }
+    
+     /*
+     * Projects options
+     */
+    public function addProjectAction()
+    {
+        
+    }
+    
+    public function editProjectAction()
+    {
+        
+    }
+    
+    public function deleteProjectAction()
+    {
+        
+    }
+
+    /*
+     * Authentication actions
+     */
     public function loginAction()
     {
         $this->layout('layout/user');
@@ -90,6 +206,28 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toRoute('login');
     }
     
+    /*public function profileAction()
+    {
+        $this->layout('layout/user');
+        if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('No estás autorizado para ver perfiles');
+            return $this->redirect()->toRoute('user');
+        }
+        
+        //cambiar por nickname
+        $userId = $this->params()->fromRoute('nickname');
+        $member = $this->getUserService()->findById($userId);
+       
+        if ($member == null) {
+            //$this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
+            return $this->redirect()->toRoute('user');
+        }
+       
+        return new ViewModel(array(
+            'member' => $member,
+        ));
+    }*/
+    
     public function profileAction()
     {
         $this->layout('layout/user');
@@ -99,8 +237,8 @@ class IndexController extends AbstractActionController
         }
         
         //cambiar por nickname
-        $userId = $this->params()->fromRoute('userId');
-        $member = $this->getUserService()->findById($userId);
+        $userId = $this->params()->fromRoute('nickname');
+        $member = $this->getUserService()->findByNickname($userId);
        
         if ($member == null) {
             //$this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
@@ -163,7 +301,7 @@ class IndexController extends AbstractActionController
         'tempFile' => $tempFile,
     );
     }
-
+    
     /**
      * @return \User\Service\UserService
      */

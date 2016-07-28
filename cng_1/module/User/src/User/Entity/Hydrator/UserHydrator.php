@@ -28,6 +28,10 @@ class UserHydrator implements HydratorInterface
             'password' => $object->getPassword(),
             'created' => $object->getCreated(),
             'user_group' => $object->getUserGroup(),
+            'nickname' => $object->getNickname(),
+            'gender' => $object->getGender(),
+            'age' => $object->getAge(),
+            'bio' => $object->getBio(),
         );
     }
 
@@ -52,7 +56,10 @@ class UserHydrator implements HydratorInterface
         $object->setPassword(isset($data['password']) ? $data['password'] : null);
         $object->setCreated(isset($data['created']) ? $data['created'] : null);
         $object->setUserGroup(isset($data['user_group']) ? $data['user_group'] : null);
-
+        $object->setNickname(isset($data['nickname']) ? $data['nickname'] : null);
+        $object->setGender(isset($data['gender']) ? $data['gender'] : null);
+        $object->setAge(isset($data['age']) ? $data['age'] : null);
+        $object->setBio(isset($data['bio']) ? $data['bio'] : null);
         return $object;
     }
 }

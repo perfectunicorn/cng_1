@@ -116,9 +116,9 @@ return array(
                'profile' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/user/profile/:userId',
+                    'route' => '/user/:nickname',
                     'constraints' => array(
-                        'userId' => '[0-9]+',
+                        'nickname' => '[a-zA-Z0-9-]+',
                     ),
                     'defaults' => array(
                         'controller' => 'User\Controller\Index',
@@ -148,6 +148,20 @@ return array(
                     'defaults' => array(
                         'controller' => 'User\Controller\Avatar',
                         'action' => 'index',
+                    ),
+                ),
+            ),
+            
+            'edit-info' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/about/:nickname',
+                    'constraints' => array(
+                        'nickname' => '[a-zA-Z0-9-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'edit',
                     ),
                 ),
             ),
