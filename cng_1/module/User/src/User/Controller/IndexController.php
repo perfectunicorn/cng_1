@@ -3,14 +3,16 @@
 namespace User\Controller;
 
 use User\Entity\User;
+use User\Entity\Career;
 use User\Form\Add;
+use User\Form\AddJob;
 use User\Form\Edit;
 use User\Form\Login;
 use User\Form\fileUpload;
 use User\Service\UserService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use User\Form\InputFilter\InputFilter;
+//use User\Form\InputFilter\InputFilter;
 
 class IndexController extends AbstractActionController
 {
@@ -126,12 +128,63 @@ class IndexController extends AbstractActionController
      */
     public function addJobAction()
     {
+        $this->layout('layout/user');
+        if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('You must be logged in to add any data on profile');
+            return $this->redirect()->toRoute('profile');
+        }
+
+        $form = new AddJob();
+        $variables = array('form' => $form);
+
+        if ($this->request->isPost()) {
+            $blogPost = new Career();
+            $form->bind($blogPost);
+            //$form->setInputFilter(new AddJob());
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+                
+                var_dump($blogPost);
+                $this->getUserService()->addCareer($blogPost, $user->id);
+                
+                $this->flashMessenger()->addSuccessMessage('The job has been added!');
+            }
+        }
         
+        return new ViewModel($variables);
     }
     
     public function editJobAction()
     {
-        
+            $this->layout('layout/user');
+        $form = new AddJob();
+
+        if ($this->request->isPost()) {
+            $career = new Career();
+            $form->bind($career);
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+                $this->getUserService()->update($career);
+                $this->flashMessenger()->addSuccessMessage('The course has been updated!');
+            }
+        } else {
+            $career = $this->getUserService()->findCareerById($this->params()->fromRoute('jobId'));
+
+            if ($career == null) {
+               // $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
+            } else {
+                $form->bind($career);
+                $form->get('organization')->setValue($career->getOrganization);
+                $form->get('position')->setValue($career->getPosition());
+                $form->get('id')->setValue($career->getId());
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+        )); 
     }
     
     public function deleteJobAction()
@@ -239,14 +292,15 @@ class IndexController extends AbstractActionController
         //cambiar por nickname
         $userId = $this->params()->fromRoute('nickname');
         $member = $this->getUserService()->findByNickname($userId);
-       
+        $career=$this->getUserService()->findCareerByUser($member->getId());
+
         if ($member == null) {
             //$this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
             return $this->redirect()->toRoute('user');
         }
        
         return new ViewModel(array(
-            'member' => $member,
+            'member' => $member,'career'=>$career,
         ));
     }
     

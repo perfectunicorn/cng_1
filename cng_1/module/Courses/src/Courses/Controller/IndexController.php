@@ -2,9 +2,9 @@
 
 namespace Courses\Controller;
 
-use Courses\Entity\Hydrator\CategoryHydrator;
-use Courses\Entity\Hydrator\CourseHydrator;
-use Courses\Entity\Hydrator\TopicHydrator;
+//use Courses\Entity\Hydrator\CategoryHydrator;
+//use Courses\Entity\Hydrator\CourseHydrator;
+//use Courses\Entity\Hydrator\TopicHydrator;
 use Courses\Entity\Course;
 use Courses\Entity\Topic;
 use Courses\Form\Add;
@@ -15,7 +15,7 @@ use Courses\InputFilter\AddCourse;
 use Courses\InputFilter\TopicFilter;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
+//use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController

@@ -3,6 +3,7 @@
 namespace User\Service;
 
 use User\Entity\User;
+use User\Entity\Career;
 use Zend\Authentication\AuthenticationService;
 
 class UserServiceImpl implements UserService
@@ -43,6 +44,43 @@ class UserServiceImpl implements UserService
     {
         return $this->userRepository->findByNickname($userId);
     }
+    
+    
+    /*
+     * Career services' implementation
+     * 
+     */
+    
+    public function addCareer(Career $career,$userId)
+    {
+       $this->userRepository->addCareer($career,$userId); 
+    }
+    
+    public function updateCareer(Career $career)
+    {
+        $this->userRepository->updateCareer($career); 
+    }
+     
+    public function findCareerById($jobId)
+    {
+        $this->userRepository->findCareerById($jobId); 
+    }
+    
+    public function findCareerByUser($userId)
+    {
+        return $this->userRepository->findCareerByUser($userId);
+    }
+    
+    public function fetchCareers($page)
+    {
+        $this->userRepository->fetchCareers($page);
+    }
+    
+    public function deleteCareer($careerId)
+    {
+        $this->userRepository->deleteCareer($careerId);
+    }
+    
     /**
      * @return \Zend\Authentication\AuthenticationService
      */

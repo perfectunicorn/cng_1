@@ -72,7 +72,7 @@ class AvatarController extends AbstractActionController
                     }
                 }  
             } 
-            return $this->redirect()->toRoute('profile',array('userId'=>$user->id));
+            return $this->redirect()->toRoute('profile',array('nickname'=>$user->nickname));
         }
           
         return array('form' => $form);

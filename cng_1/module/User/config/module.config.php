@@ -166,6 +166,31 @@ return array(
                 ),
             ),
             
+            'add-job' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/add-job',
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'addJob',
+                    ),
+                ),
+            ),
+            
+             'edit-job' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/edit-job/:jobId',
+                    'constraints' => array(
+                        'jobId' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'editJob',
+                    ),
+                ),
+            ),
+            
         ),
     ),
 

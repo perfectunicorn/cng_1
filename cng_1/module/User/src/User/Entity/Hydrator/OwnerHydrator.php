@@ -4,6 +4,7 @@ namespace User\Entity\Hydrator;
 
 use User\Entity\User;
 use User\Entity\Uploads;
+use User\Entity\Career;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class OwnerHydrator implements HydratorInterface
@@ -17,7 +18,7 @@ class OwnerHydrator implements HydratorInterface
      */
     public function extract($object)
     {
-        if (!$object instanceof Uploads ||$object->getOwner() == null) {
+        if (!$object instanceof Uploads || !$object instanceof Career || $object->getOwner() == null) {
             return array();
         }
 
@@ -43,7 +44,7 @@ class OwnerHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        if (!$object instanceof Uploads || $data['user_id'] == null) {
+        if (!$object instanceof Uploads || !$object instanceof Career || $data['user_id'] == null) {
             return $object;
         }
 

@@ -3,6 +3,7 @@
 namespace User\Service;
 
 use User\Entity\User;
+use User\Entity\Career;
 
 interface UserService
 {
@@ -20,7 +21,23 @@ interface UserService
     public function findById($userId);
     
     public function findByNickname($userId);
-
+    
+    /*
+     * Career services
+     * 
+     */
+    
+    public function addCareer(Career $career,$userId);
+    
+    public function updateCareer(Career $career);
+     
+    public function findCareerById($jobId);
+    
+    public function findCareerByUser($userId);
+    
+    public function fetchCareers($page);
+    
+    public function deleteCareer($careerId);
     /**
      * @return \Zend\Authentication\AuthenticationService
      */

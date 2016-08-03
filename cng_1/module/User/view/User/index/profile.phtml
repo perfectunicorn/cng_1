@@ -38,6 +38,7 @@ $user = $this->member;
                 </ul>         
                 <ul>
                     <li><a href="<?php echo $this->url('edit-info',array('nickname' => $user->getNickname()))?>">Editar información básica</a></li>
+                    <li><a href="<?php echo $this->url('add-job')?>">Agregar trabajo</a></li>
                     <li><a href="<?php echo $this->url('avatar')?>">Agregar avatar</a></li>
                 </ul>
             </div>
@@ -46,15 +47,42 @@ $user = $this->member;
         <div class="col s12 m8">
             <div class="card-panel">
                 <div class="card-title">
-                    <ul class="box valign-wrapper">
-                        <li><a  href="">Cursos</a></li>
-                        <li><a  href="">Proyectos</a></li> 
+                    <ul class="tabs">
+                        <li class="tab col s3"><a  href="">Educación</a></li>
+                        <li class="tab col s3"><a  href="#career">Experiencia laboral</a></li> 
+                        <li class="tab col s3"><a  href="">Cursos</a></li>
+                        <li class="tab col s3"><a  href="">Proyectos</a></li> 
+                        
                     </ul>
                 </div>
                 <div class=card-content">
-                    <span>Datos adicionales</span>
-                </div>
-          </div>
+                    <div id="career">
+                        <table class="responsive-table centered">
+                        <thead>
+                            <tr>
+                                <th width="20%">Organizacion</th>
+                                <th width="20%">Puesto</th>
+                                <th width="50%">Descripcion del puesto</th>
+                                <th width="*">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <?php
+                           foreach($this->career as $career){ 
+                               ?>  
+                            <tr>
+                                <td> <?php  echo sprintf($career['organization']); ?> </td>
+                                <td> <?php  echo sprintf($career['position']); ?> </td>
+                                <td> <?php  echo sprintf($career['job_description']); ?> </td>
+                                <td> <a href="<?php echo $this->url('edit-job',array('jobId' => $career['id']))?>">Editar</a></td>
+                            </tr>
+
+                            <?php }?>
+                        </tbody>
+                    </table>
+                    
+                    </div>
+              </div>
+            </div>
         </div>
-      </div>
      

@@ -3,7 +3,10 @@
 namespace User\Repository;
 
 use User\Entity\User;
+use User\Entity\Career;
 use User\Entity\Hydrator\UserHydrator;
+use User\Entity\Hydrator\OwnerHydrator;
+use User\Entity\Hydrator\CareerHydrator;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Db\Adapter\AdapterAwareTrait;
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -162,6 +165,151 @@ class UserRepositoryImpl implements UserRepository
         $resultSet->initialize($results);
 
         return ($resultSet->count() > 0 ? $resultSet->current() : null);
+    }
+    
+    /*
+     * Career repository's methods
+     * 
+     */
+    
+    public function addCareer(Career $career,$userId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->insert()
+            ->values(array(
+                'organization' => $career->getOrganization(),
+                'position' => $career->getPosition(),
+                'job_description' => $career->getJobDescription(),
+                'job_achievement' => $career->getJobAchievement(),
+                'start_date' => $career->getStartDate(),
+                'end_date' => $career->getEndDate(),
+                'created' => time(),
+                'user_id' => $userId,
+            ))
+            ->into('career');
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute();
+    }
+    
+    public function updateCareer(Career $career)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->update('user')
+            ->set(array(
+                'organization' => $career->getOrganization(),
+                'position' => $career->getPosition(),
+                'job_description' => $career->getJobDescription(),
+                'job_achievement' => $career->getJobAchievement(),
+                'start_date' => $career->getStartDate(),
+                'start_date' => $career->getEndDate(),
+            ))
+            ->where(array(
+                'id' => $career->getId(),
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute(); 
+    }
+     
+    public function findCareerById($jobId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'organization',
+            'position',
+            'job_description',
+            'job_achievement',
+            'start_date',
+            'end_date',
+        ))
+            ->from(array('p' => 'career'))
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.user_id',
+                array(
+                    'user_id' => 'id',
+                    'first_name' => 'first_name',
+                    'last_name' => 'last_name',
+                    'email' => 'email',
+                    'created' => 'created',
+                    'user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )
+            ->where(array(
+                'p.id' => $jobId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new OwnerHydrator());
+        $hydrator->add(new UserHydrator());
+        $hydrator->add(new CareerHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Career());
+        $resultSet->initialize($results);
+
+        return ($resultSet->count() > 0 ? $resultSet->current() : null);
+    }
+    
+    
+        public function findCareerByUser($userId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'organization',
+            'position',
+            'job_description',
+            'job_achievement',
+            'start_date',
+            'end_date',
+        ))
+            ->from(array('p' => 'career'))
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.user_id',
+                array(
+                    'user_id' => 'id',
+                    'first_name' => 'first_name',
+                    'last_name' => 'last_name',
+                    'email' => 'email',
+                    'created' => 'created',
+                    'user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )
+            ->where(array(
+                'p.user_id' => $userId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new OwnerHydrator());
+        $hydrator->add(new CareerHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Career());
+        $resultSet->initialize($results);
+
+        return ($resultSet->count() > 0 ? $resultSet->toArray() : null);
+    }
+    
+    public function fetchCareers($page)
+    {
+        $this->userRepository->fetchCareers($page);
+    }
+    
+    public function deleteCareer($careerId)
+    {
+        $this->userRepository->deleteCareer($careerId);
     }
 
     /**
