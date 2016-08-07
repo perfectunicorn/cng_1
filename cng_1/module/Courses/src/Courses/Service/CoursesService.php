@@ -38,6 +38,13 @@ interface CoursesService
      * @return Post|null
      */
     public function findById($courseId);
+    
+    /**
+     * @param $userId int
+     *
+     * @return Post|null
+     */
+    public function findByUser($userId);
 
     /**
      * @param Course $course

@@ -4,8 +4,11 @@ namespace User\Repository;
 
 use User\Entity\User;
 use User\Entity\Career;
+use User\Entity\Education;
 use User\Entity\Hydrator\UserHydrator;
-use User\Entity\Hydrator\OwnerHydrator;
+use User\Entity\Hydrator\EducationHydrator;
+use User\Entity\Hydrator\DegreeHydrator;
+use User\Entity\Hydrator\AuthorHydrator;
 use User\Entity\Hydrator\CareerHydrator;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Db\Adapter\AdapterAwareTrait;
@@ -109,6 +112,8 @@ class UserRepositoryImpl implements UserRepository
 
         $resultSet = new HydratingResultSet($hydrator, new User());
         $resultSet->initialize($results);
+        
+       
 
         return ($resultSet->count() > 0 ? $resultSet->current() : null);
     }
@@ -163,16 +168,189 @@ class UserRepositoryImpl implements UserRepository
 
         $resultSet = new HydratingResultSet($hydrator, new User());
         $resultSet->initialize($results);
-
+        
+         //var_dump($resultSet->current()); 
         return ($resultSet->count() > 0 ? $resultSet->current() : null);
     }
+    
+    /*
+     * Education repository's methods
+     * 
+     */
+    
+    public function addEducation(Education $education,$authorId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->insert()
+            ->values(array(
+                'organization' => $education->getOrganization(),
+                'degree_id' => $education->getDegree()->getId(),
+                'career' => $education->getCareer(),
+                'academic_specialty' => $education->getAcademicSpecialty(),
+                'academic_achievement' => $education->getAcademicAchievement(),
+                'start_date' => $education->getStartDate(),
+                'end_date' => $education->getEndDate(),
+                'created' => time(),
+                'author_id' => $authorId,
+            ))
+            ->into('education');
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute();
+    }
+    
+    public function updateEducation(Education $education)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->update('education')
+            ->set(array(
+                'organization' => $education->getOrganization(),
+                'degree_id' => $education->getDegree()->getId(),
+                'career' => $education->getCareer(),
+                'academic_specialty' => $education->getAcademicSpecialty(),
+                'academic_achievement' => $education->getAcademicAchievement(),
+                'start_date' => $education->getStartDate(),
+                'end_date' => $education->getEndDate(),
+            ))
+            ->where(array(
+                'id' => $education->getId(),
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute(); 
+    }
+     
+    public function findEducationById($educationId)
+    {
+        
+       $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'organization',
+            'degree_id',
+            'career',
+            'academic_specialty',
+            'academic_achievement',
+            'start_date',
+            'end_date',
+            'created',
+        ))
+            ->from(array('p' => 'education'))
+            ->join(
+                array('c' => 'education_degree'), // Table name
+                'c.id = p.degree_id', // Condition
+                array('degree_id' => 'id', 'name' => 'degree'), // Columns
+                $select::JOIN_INNER
+            )
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.author_id',
+                array(
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )
+            ->where(array(
+                'p.id' => $educationId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new AuthorHydrator());
+        $hydrator->add(new DegreeHydrator());
+        $hydrator->add(new EducationHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Education());
+        $resultSet->initialize($results);
+        var_dump($resultSet->current());
+
+        
+       return ($resultSet->count() > 0 ? $resultSet->current() : null);
+        
+    }
+    
+    
+        public function findEducationByUser($authorId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'organization',
+            'degree_id',
+            'career',
+            'academic_specialty',
+            'academic_achievement',
+            'start_date',
+            'end_date',
+            'created',
+        ))
+            ->from(array('p' => 'education'))
+            ->join(
+                array('c' => 'education_degree'), // Table name
+                'c.id = p.degree_id', // Condition
+                array('degree_id' => 'id', 'name' => 'degree'), // Columns
+                $select::JOIN_INNER
+            )
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.author_id',
+                array(
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )
+            ->where(array(
+                'p.author_id' => $authorId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new AuthorHydrator());
+        $hydrator->add(new DegreeHydrator());
+        $hydrator->add(new EducationHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Education());
+        $resultSet->initialize($results);
+       // var_dump($resultSet->current());
+
+        
+       return ($resultSet->count() > 0 ? $resultSet->toArray() : null);
+        
+    }
+    
+    public function fetchEducation($page)
+    {
+        $this->userRepository->fetchCareers($page);
+    }
+    
+    public function deleteEducation($careerId)
+    {
+        $this->userRepository->deleteCareer($educationId);
+    }
+
     
     /*
      * Career repository's methods
      * 
      */
     
-    public function addCareer(Career $career,$userId)
+    public function addCareer(Career $career,$authorId)
     {
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
@@ -184,7 +362,7 @@ class UserRepositoryImpl implements UserRepository
                 'start_date' => $career->getStartDate(),
                 'end_date' => $career->getEndDate(),
                 'created' => time(),
-                'user_id' => $userId,
+                'author_id' => $authorId,
             ))
             ->into('career');
 
@@ -195,7 +373,7 @@ class UserRepositoryImpl implements UserRepository
     public function updateCareer(Career $career)
     {
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
-        $insert = $sql->update('user')
+        $insert = $sql->update('career')
             ->set(array(
                 'organization' => $career->getOrganization(),
                 'position' => $career->getPosition(),
@@ -214,7 +392,8 @@ class UserRepositoryImpl implements UserRepository
      
     public function findCareerById($jobId)
     {
-        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        
+       $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $select = $sql->select();
         $select->columns(array(
             'id',
@@ -228,14 +407,14 @@ class UserRepositoryImpl implements UserRepository
             ->from(array('p' => 'career'))
             ->join(
                 array('a' => 'user'),
-                'a.id = p.user_id',
+                'a.id = p.author_id',
                 array(
-                    'user_id' => 'id',
-                    'first_name' => 'first_name',
-                    'last_name' => 'last_name',
-                    'email' => 'email',
-                    'created' => 'created',
-                    'user_group' => 'user_group',
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
                 ),
                 $select::JOIN_LEFT
             )
@@ -247,14 +426,16 @@ class UserRepositoryImpl implements UserRepository
         $results = $statement->execute();
 
         $hydrator = new AggregateHydrator();
-        $hydrator->add(new OwnerHydrator());
-        $hydrator->add(new UserHydrator());
+        $hydrator->add(new AuthorHydrator());
         $hydrator->add(new CareerHydrator());
 
         $resultSet = new HydratingResultSet($hydrator, new Career());
         $resultSet->initialize($results);
+        var_dump($resultSet->current());
 
-        return ($resultSet->count() > 0 ? $resultSet->current() : null);
+        
+       return ($resultSet->count() > 0 ? $resultSet->current() : null);
+        
     }
     
     
@@ -274,31 +455,31 @@ class UserRepositoryImpl implements UserRepository
             ->from(array('p' => 'career'))
             ->join(
                 array('a' => 'user'),
-                'a.id = p.user_id',
+                'a.id = p.author_id',
                 array(
-                    'user_id' => 'id',
-                    'first_name' => 'first_name',
-                    'last_name' => 'last_name',
-                    'email' => 'email',
-                    'created' => 'created',
-                    'user_group' => 'user_group',
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
                 ),
                 $select::JOIN_LEFT
             )
             ->where(array(
-                'p.user_id' => $userId,
+                'p.author_id' => $userId,
             ));
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
 
         $hydrator = new AggregateHydrator();
-        $hydrator->add(new OwnerHydrator());
+        $hydrator->add(new AuthorHydrator());
         $hydrator->add(new CareerHydrator());
 
         $resultSet = new HydratingResultSet($hydrator, new Career());
         $resultSet->initialize($results);
-
+        
         return ($resultSet->count() > 0 ? $resultSet->toArray() : null);
     }
     

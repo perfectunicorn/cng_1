@@ -4,11 +4,14 @@ namespace User\Controller;
 
 use User\Entity\User;
 use User\Entity\Career;
+use User\Entity\Education;
 use User\Form\Add;
 use User\Form\AddJob;
+use User\Form\AddEducation;
+use User\Form\EditJob;
+use User\Form\EditEducation;
 use User\Form\Edit;
 use User\Form\Login;
-use User\Form\fileUpload;
 use User\Service\UserService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -69,7 +72,7 @@ class IndexController extends AbstractActionController
             }
         } else {
             $user = $this->getUserService()->findByNickname($this->params()->fromRoute('nickname'));
-
+            //var_dump($user);
             if ($user == null) {
                 $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
             } else {
@@ -110,12 +113,73 @@ class IndexController extends AbstractActionController
      */
     public function addEducationAction()
     {
+        $this->layout('layout/user');
+        if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('You must be logged in to add any data on profile');
+            return $this->redirect()->toRoute('user');
+        }
+
+        $form = new AddEducation();
+        $variables = array('form' => $form);
+
+        if ($this->request->isPost()) {
+            $blogPost = new Education();
+            $form->bind($blogPost);
+            //$form->setInputFilter(new AddJob());
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+                
+                var_dump($blogPost);
+                $this->getUserService()->addEducation($blogPost, $user->id);
+                
+                $this->flashMessenger()->addSuccessMessage('El ...');
+            }
+        }
         
+        return new ViewModel($variables);
     }
     
     public function editEducationAction()
     {
+        $this->layout('layout/user');
+        $form = new EditEducation();
         
+         if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('You must be logged in to add any data on profile');
+            return $this->redirect()->toRoute('user');
+        }
+
+        if ($this->request->isPost()) {
+            $course = new Education();
+            $form->bind($course);
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+                $this->getUserService()->updateEducation($course);
+                $this->flashMessenger()->addSuccessMessage('The job has been updated!');
+            }
+        } else {
+            $educationId=$this->params()->fromRoute('educationId');
+            var_dump($educationId);
+            //$course = $this->getUserService()->findCareerById($this->params()->fromRoute('jobId'));
+            //AQUI ME REGRESA NULL
+            $course=$this->getUserService()->findEducationById($educationId);
+            
+            if ($course == null) {
+                var_dump($course);
+            } else {
+                $form->bind($course);
+                $form->get('degree_id')->setValue($course->getDegree()->getId());
+                //$form->get('slug')->setValue($course->getSlug());
+                $form->get('id')->setValue($course->getId());
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+        ));
+    
     }
     
     public function deleteEducationAction()
@@ -131,7 +195,7 @@ class IndexController extends AbstractActionController
         $this->layout('layout/user');
         if (!$user = $this->identity()) {
             $this->flashMessenger()->addErrorMessage('You must be logged in to add any data on profile');
-            return $this->redirect()->toRoute('profile');
+            return $this->redirect()->toRoute('user');
         }
 
         $form = new AddJob();
@@ -155,36 +219,46 @@ class IndexController extends AbstractActionController
         return new ViewModel($variables);
     }
     
+    
     public function editJobAction()
     {
-            $this->layout('layout/user');
-        $form = new AddJob();
+        $this->layout('layout/user');
+        $form = new EditJob();
+        
+         if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('You must be logged in to add any data on profile');
+            return $this->redirect()->toRoute('user');
+        }
 
         if ($this->request->isPost()) {
-            $career = new Career();
-            $form->bind($career);
+            $course = new Career();
+            $form->bind($course);
             $form->setData($this->request->getPost());
 
             if ($form->isValid()) {
-                $this->getUserService()->update($career);
-                $this->flashMessenger()->addSuccessMessage('The course has been updated!');
+                $this->getUserService()->updateCareer($course);
+                $this->flashMessenger()->addSuccessMessage('The job has been updated!');
             }
         } else {
-            $career = $this->getUserService()->findCareerById($this->params()->fromRoute('jobId'));
-
-            if ($career == null) {
-               // $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
+            $jobId=$this->params()->fromRoute('jobId');
+            var_dump($jobId);
+            //$course = $this->getUserService()->findCareerById($this->params()->fromRoute('jobId'));
+            //AQUI ME REGRESA NULL
+            $course=$this->getUserService()->findCareerById($jobId);
+            
+            if ($course == null) {
+                var_dump($course);
             } else {
-                $form->bind($career);
-                $form->get('organization')->setValue($career->getOrganization);
-                $form->get('position')->setValue($career->getPosition());
-                $form->get('id')->setValue($career->getId());
+                $form->bind($course);
+                //$form->get('category_id')->setValue($course->getCategory()->getId());
+                //$form->get('slug')->setValue($course->getSlug());
+                $form->get('id')->setValue($course->getId());
             }
         }
 
         return new ViewModel(array(
             'form' => $form,
-        )); 
+        ));
     }
     
     public function deleteJobAction()
@@ -293,6 +367,8 @@ class IndexController extends AbstractActionController
         $userId = $this->params()->fromRoute('nickname');
         $member = $this->getUserService()->findByNickname($userId);
         $career=$this->getUserService()->findCareerByUser($member->getId());
+        $education=$this->getUserService()->findEducationByUser($member->getId());
+        $course=$this->getCoursesService()->findByUser($member->getId());
 
         if ($member == null) {
             //$this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
@@ -300,18 +376,18 @@ class IndexController extends AbstractActionController
         }
        
         return new ViewModel(array(
-            'member' => $member,'career'=>$career,
+            'member' => $member,'career'=>$career,'education'=>$education,'course'=>$course,
         ));
     }
     
     
-    public function uploadsAction()
+    /*public function uploadsAction()
     {
           $this->layout('layout/user');
         return new ViewModel(array(
             'paginator' => $this->getUploadsService()->fetchAll($this->params()->fromRoute('page')),
         ));
-    }
+    }*/
     
     public function getFileUploadLocation()
     {
@@ -320,7 +396,7 @@ class IndexController extends AbstractActionController
         return $config['module_config']['upload_location'];
     }
     
-    public function uploadAction()
+   /* public function uploadAction()
     {
         
         $this->layout('layout/user');
@@ -354,7 +430,7 @@ class IndexController extends AbstractActionController
         'form'     => $form,
         'tempFile' => $tempFile,
     );
-    }
+    }*/
     
     /**
      * @return \User\Service\UserService
@@ -362,6 +438,11 @@ class IndexController extends AbstractActionController
     protected function getUserService()
     {
         return $this->getServiceLocator()->get('User\Service\UserService');
+    }
+    
+     protected function getCoursesService()
+    {
+        return $this->getServiceLocator()->get('Courses\Service\CoursesService');
     }
     
      protected function getUploadsService()

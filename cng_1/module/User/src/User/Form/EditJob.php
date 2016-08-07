@@ -7,15 +7,18 @@ use Zend\Form\Form;
 use Zend\Form\Element;
 use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
 
-class AddJob extends Form
+class EditJob extends Form
 {
     public function __construct()
     {
-        parent::__construct('add-job');
+        parent::__construct('edit-job');
         $hydrator = new AggregateHydrator();
-        //$hydrator->add(new AuthorHydrator());
+       // $hydrator->add(new AuthorHydrator());
         $hydrator->add(new CareerHydrator());
         $this->setHydrator($hydrator);
+
+        
+        $id = new Element\Hidden('id');
         
         $organization = new Element\Text('organization');
         $organization->setLabel('Institución');
@@ -59,6 +62,7 @@ class AddJob extends Form
         $submit->setValue('Agregar trabajo');
         $submit->setAttribute('class', 'btn btn-primary');
 
+        $this->add($id);
         $this->add($organization);
         $this->add($position);
         $this->add($jobDescription);

@@ -2,10 +2,10 @@
 
 namespace User\Entity\Hydrator;
 
-use User\Entity\Career;
+use User\Entity\Education;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
-class CareerHydrator implements HydratorInterface
+class EducationHydrator implements HydratorInterface
 {
     /**
      * Extract values from an object
@@ -16,16 +16,16 @@ class CareerHydrator implements HydratorInterface
      */
     public function extract($object)
     {
-        if (!$object instanceof Career) {
+        if (!$object instanceof Education) {
             return array();
         }
 
         return array(
-            'career_id' => $object->getId(), // OJO
+            'education_id' => $object->getId(), // OJO
             'organization' => $object->getOrganization(),
-            'position' => $object->getPosition(),
-            'job_description' => $object->getJobDescription(),
-            'job_achievement' => $object->getJobAchievement(),
+            'academic_specialty' => $object->getAcademicSpecialty(),
+            'academic_achievement' => $object->getAcademicAchievement(),
+            'career' => $object->getCareer(),
             'start_date' => $object->getStartDate(),
             'end_date' => $object->getEndDate(),
             'created' => $object->getCreated(),
@@ -42,15 +42,15 @@ class CareerHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        if (!$object instanceof Career) {
+        if (!$object instanceof Education) {
             return $object;
         }
 
         $object->setId(isset($data['id']) ? intval($data['id']) : null);
         $object->setOrganization(isset($data['organization']) ? $data['organization'] : null);
-        $object->setPosition(isset($data['position']) ? $data['position'] : null);
-        $object->setJobDescription(isset($data['job_description']) ? $data['job_description'] : null);
-        $object->setJobAchievement(isset($data['job_achievement']) ? $data['job_achievement'] : null);
+        $object->setAcademicSpecialty(isset($data['academic_specialty']) ? $data['academic_specialty'] : null);
+        $object->setAcademicAchievement(isset($data['academic_achievement']) ? $data['academic_achievement'] : null);
+        $object->setCareer(isset($data['career']) ? $data['career'] : null);
         $object->setStartDate(isset($data['start_date']) ? $data['start_date'] : null);
         $object->setEndDate(isset($data['end_date']) ? $data['end_date'] : null);
         $object->setCreated(isset($data['created']) ? $data['created'] : null);

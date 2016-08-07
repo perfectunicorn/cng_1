@@ -21,7 +21,7 @@ class CourseHydrator implements HydratorInterface
         }
 
         return array(
-            'id' => $object->getId(),
+            'course_id' => $object->getId(),
             'title' => $object->getTitle(),
             'slug' => $object->getSlug(),
             'content' => $object->getContent(),

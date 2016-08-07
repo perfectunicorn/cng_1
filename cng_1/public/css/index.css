@@ -61,8 +61,28 @@ centro{
 }
 
 a:hover {
-  color: purple;
+  color: pink;
   background-color: transparent;
-  text-decoration: underline;
+  text-decoration: none;
 }
+
+a {
+  color: teal;  
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.aligncenter {
+   vertical-align: inherit; 
+   display:inline; 
+   border-radius: 2px;
+   margin: 20px 6px 2px -8px;
+}
+
+#menu #avatar
+{
+    list-style-image: url(ima/i18l_wood_phone.png);
+}
+
+
 

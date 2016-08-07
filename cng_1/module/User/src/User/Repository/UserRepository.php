@@ -5,6 +5,7 @@ namespace User\Repository;
 use Application\Repository\RepositoryInterface;
 use User\Entity\User;
 use User\Entity\Career;
+use User\Entity\Education;
 
 interface UserRepository extends RepositoryInterface
 {
@@ -25,6 +26,24 @@ interface UserRepository extends RepositoryInterface
     public function findById($userId);
     
     public function findByNickname($userId);
+    
+    
+    /*
+     * Career repository
+     * 
+     */
+    
+    public function addEducation(Education $education,$authorId);
+    
+    public function updateEducation(Education $education);
+     
+    public function findEducationById($educationId);
+    
+    public function findEducationByUser($authorId);
+    
+    public function fetchEducation($page);
+    
+    public function deleteEducation($educationId);
     
     /*
      * Career repository

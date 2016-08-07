@@ -2,22 +2,25 @@
 
 namespace User\Form;
 
-use User\Entity\Hydrator\EducationHydrator;
 use User\Entity\Hydrator\DegreeHydrator;
+use User\Entity\Hydrator\EducationHydrator;
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
 
-class AddEducation extends Form
+class EditEducation extends Form
 {
     public function __construct()
     {
-        parent::__construct('add-education');
+        parent::__construct('edit-education');
+        
         $hydrator = new AggregateHydrator();
-        //$hydrator->add(new AuthorHydrator());
-        $hydrator->add(new EducationHydrator());
         $hydrator->add(new DegreeHydrator());
+        $hydrator->add(new EducationHydrator());
         $this->setHydrator($hydrator);
+
+        
+        $id = new Element\Hidden('id');
         
         $organization = new Element\Text('organization');
         $organization->setLabel('Institución');
@@ -79,6 +82,7 @@ class AddEducation extends Form
         $submit->setValue('Agregar educación');
         $submit->setAttribute('class', 'btn btn-primary');
 
+        $this->add($id);
         $this->add($organization);
         $this->add($degree);
         $this->add($career);

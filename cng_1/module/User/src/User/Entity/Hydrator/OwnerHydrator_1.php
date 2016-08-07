@@ -45,17 +45,17 @@ class OwnerHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        if (!$object instanceof Uploads || !$object instanceof Career || $data['owner_id'] == null) {
+        if (!$object instanceof Uploads || !$object instanceof Career || $data['user_id'] == null) {
             return $object;
         }
 
         $owner = new User();
-        $owner->setId(isset($data['owner_id']) ? intval($data['owner_id']) : null);
-        $owner->setFirstName(isset($data['owner_first_name']) ? $data['owner_first_name'] : null);
-        $owner->setLastName(isset($data['owner_last_name']) ? $data['owner_last_name'] : null);
-        $owner->setEmail(isset($data['owner_email']) ? $data['owner_email'] : null);
-        $owner->setCreated(isset($data['owner_created']) ? $data['owner_created'] : null);
-        $owner->setUserGroup(isset($data['owner_user_group']) ? $data['owner_user_group'] : null);
+        $owner->setId(isset($data['user_id']) ? intval($data['user_id']) : null);
+        $owner->setFirstName(isset($data['first_name']) ? $data['first_name'] : null);
+        $owner->setLastName(isset($data['last_name']) ? $data['last_name'] : null);
+        $owner->setEmail(isset($data['email']) ? $data['email'] : null);
+        $owner->setCreated(isset($data['created']) ? $data['created'] : null);
+        $owner->setUserGroup(isset($data['user_group']) ? $data['user_group'] : null);
         $object->setOwner($owner);
 
         return $object;

@@ -10,7 +10,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
+                        'controller' => 'User\Controller\Index',
                         'action'     => 'index',
                     ),
                 ),
@@ -177,6 +177,17 @@ return array(
                 ),
             ),
             
+             'add-education' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/add-education',
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'addEducation',
+                    ),
+                ),
+            ),
+            
              'edit-job' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -191,13 +202,53 @@ return array(
                 ),
             ),
             
+             'edit-education' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/edit-education/:educationId',
+                    'constraints' => array(
+                        'educationId' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'editEducation',
+                    ),
+                ),
+            ),
+            
+             'edit-course' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/edit-course/:courseId',
+                    'constraints' => array(
+                        'courseId' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Index',
+                        'action' => 'edit',
+                    ),
+                ),
+            ),
+            
+             'add-course' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/add-course',
+                    'defaults' => array(
+                        'controller' => 'Courses\Controller\Index',
+                        'action' => 'add',
+                    ),
+                ),
+            ),
+            
         ),
     ),
 
     'controllers' => array(
         'invokables' => array(
             'User\Controller\Index' => Controller\IndexController::class,
-            'User\Controller\Avatar' => Controller\AvatarController::class
+            'User\Controller\Avatar' => Controller\AvatarController::class,
+            'Courses\Controller\Index' => 'Courses\Controller\IndexController',
         ),
     ),
 

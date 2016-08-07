@@ -193,6 +193,60 @@ class CourseRepositoryImpl implements CourseRepository
 
         return ($resultSet->count() > 0 ? $resultSet->current() : null);
     }
+    
+    /**
+     * @param $userId int
+     *
+     * @return Course|null
+     */
+    public function findByUser($userId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'title',
+            'slug',
+            'content',
+            'created',
+        ))
+            ->from(array('p' => 'course'))
+            ->join(
+                array('c' => 'category'), // Table name
+                'c.id = p.category_id', // Condition
+                array('category_id' => 'id', 'name', 'category_slug' => 'slug'), // Columns
+                $select::JOIN_INNER
+            )
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.author_id',
+                array(
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )
+            ->where(array(
+                'p.author_id' => $userId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new CourseHydrator());
+        $hydrator->add(new CategoryHydrator());
+        $hydrator->add(new AuthorHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Course());
+        $resultSet->initialize($results);
+
+        return ($resultSet->count() > 0 ? $resultSet->toArray() : null);
+    }
 
     /**
      * @param Course $course

@@ -56,6 +56,16 @@ class CoursesServiceImpl implements CoursesService
     {
         return $this->courseRepository->findById($courseId);
     }
+    
+    /**
+     * @param $userId int
+     *
+     * @return Post|null
+     */
+    public function findByUser($userId)
+    {
+        return $this->courseRepository->findByUser($userId);
+    }
 
     /**
      * @param Course $course

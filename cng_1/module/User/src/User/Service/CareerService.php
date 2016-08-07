@@ -3,30 +3,12 @@
 namespace User\Service;
 
 use User\Entity\Career;
-use User\Entity\Education;
-use User\Entity\User;
 
-interface UserService
+interface CareerService
 {
     const GROUP_REGULAR = 1;
-    
-    /*
-     * Education services
-     * 
-     */
-    
-    public function addEducation(Education $education,$authorId);
-    
-    public function updateEducation(Education $education);
-    
-    public function findEducationById($educationId);
-    
-    public function findEducationByUser($authorId);
-    
-    public function fetchEducation($page);
-    
-    public function deleteEducation($educationId);
 
+  
     /*
      * Career services
      * 

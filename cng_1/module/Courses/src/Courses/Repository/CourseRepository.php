@@ -39,6 +39,15 @@ interface CourseRepository extends RepositoryInterface
      * @return Course|null
      */
     public function findById($courseId);
+    
+     /**
+     * @param $userId int
+     *
+     * @return Course|null
+     */
+    public function findByUser($userId);
+    
+    
 
     /**
      * @param Course $course

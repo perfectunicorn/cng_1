@@ -2,33 +2,34 @@
 
 namespace User\Entity;
 
-class Career
+class Education
 {
     /**
      * @var int
      */
     public $id;
-
+    
     /**
      * @var string
      */
     protected $organization;
-
-    /**
-     * @var string
-     */
-    protected $position;
-
-    /**
-     * @var string
-     */
-    protected $job_description;
     
     /**
      * @var string
      */
-    protected $job_achievement;
+    protected $career;
     
+
+    /**
+     * @var string
+     */
+    protected $academic_specialty;
+
+    /**
+     * @var string
+     */
+    protected $academic_achievement;
+
     /**
      * @var date
      */
@@ -43,6 +44,11 @@ class Career
      * @var int
      */
     protected $created;
+    
+    /**
+     * @var \User\Entity\Degree
+     */
+    protected $degree;
 
     /**
      * @var \User\Entity\User
@@ -68,51 +74,51 @@ class Career
     }
 
     /**
-     * @param string $position
+     * @param string $career
      */
-    public function setPosition($position)
+    public function setCareer($career)
     {
-        $this->position = $position;
+        $this->career = $career;
     }
 
     /**
      * @return string
      */
-    public function getPosition()
+    public function getCareer()
     {
-        return $this->position;
+        return $this->career;
     }
 
     /**
-     * @param string $job_description
+     * @param string $academic_specialty
      */
-    public function setJobDescription($job_description)
+    public function setAcademicSpecialty($academic_specialty)
     {
-        $this->job_description = $job_description;
+        $this->academic_specialty = $academic_specialty;
     }
 
     /**
      * @return string
      */
-    public function getJobDescription()
+    public function getAcademicSpecialty()
     {
-        return $this->job_description;
+        return $this->academic_specialty;
     }
     
      /**
-     * @param string $job_achievement
+     * @param string $academic_achievement
      */
-    public function setJobAchievement($job_achievement)
+    public function setAcademicAchievement($academic_achievement)
     {
-        $this->job_achievement = $job_achievement;
+        $this->academic_achievement = $academic_achievement;
     }
 
     /**
      * @return string
      */
-    public function getJobAchievement()
+    public function getAcademicAchievement()
     {
-        return $this->job_achievement;
+        return $this->academic_achievement;
     }
     
      /**
@@ -178,6 +184,22 @@ class Career
     public function getCreated()
     {
         return $this->created;
+    }
+    
+        /**
+     * @param \User\Entity\Degree $degree
+     */
+    public function setDegree($degree)
+    {
+        $this->degree = $degree;
+    }
+
+    /**
+     * @return \User\Entity\Degree
+     */
+    public function getDegree()
+    {
+        return $this->degree;
     }
 
     /**

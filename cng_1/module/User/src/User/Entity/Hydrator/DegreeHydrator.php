@@ -2,10 +2,11 @@
 
 namespace User\Entity\Hydrator;
 
-use User\Entity\Uploads;
+use User\Entity\Degree;
+use User\Entity\Education;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
-class UploadsHydrator implements HydratorInterface
+class DegreeHydrator implements HydratorInterface
 {
     /**
      * Extract values from an object
@@ -16,14 +17,15 @@ class UploadsHydrator implements HydratorInterface
      */
     public function extract($object)
     {
-        if (!$object instanceof Uploads) {
+        if (!$object instanceof Education || $object->getDegree() == null) {
             return array();
         }
 
+        $degree = $object->getDegree();
+
         return array(
-            'id' => $object->getId(),
-            'filename' => $object->getfileName(),
-            'label' => $object->getLabel(),
+            'id' => $degree->getId(),
+            'degree' => $degree->getName(),
         );
     }
 
@@ -37,14 +39,15 @@ class UploadsHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        if (!$object instanceof Uploads) {
+        if (!$object instanceof Education) {
             return $object;
         }
 
-        $object->setId(isset($data['id']) ? intval($data['id']) : null);
-        $object->setfileName(isset($data['filename']) ? $data['filename'] : null);
-        $object->setLabel(isset($data['label']) ? $data['label'] : null);
+        $degree = new Degree();
+        $degree ->setId(isset($data['degree_id']) ? intval($data['degree_id']) : null);
+        $degree ->setName(isset($data['degree']) ? $data['degree'] : null);
+        $object->setDegree($degree);
 
         return $object;
     }
-}
+} 

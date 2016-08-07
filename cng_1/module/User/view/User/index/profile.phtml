@@ -12,34 +12,41 @@ $user = $this->member;
       <div class="row">
         <div class="col s12 m4">
           <div class="card-panel z-depth-1">
-                <center><img class="circle responsive-img" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->getId().'.png')?>">
-                <p class="card-title"><?php echo sprintf($user->getFirstName().' '.$user->getLastName());?></p>
+                <center><img class="circle responsive-img" width="200" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->getId().'.png')?>">
+                <h4>
+                    <p class="card-title"><?php echo sprintf($user->getFirstName().' '.$user->getLastName());?></p>
+                </h4>
             </center><div class="card-content">
                 <ul class="collapsible z-depth-0" data-collapsible="accordion">
                     <li>
-                        <div class="collapsible-header"><?php echo sprintf('Más sobre mi'); ?></div>
+                        <div class="collapsible-header"><?php echo sprintf('Sobre mí'); ?></div>
                         <div class="collapsible-body">
-                            <?php echo sprintf($user->getBio()); ?>
-                            <?php echo sprintf('Edad');?>
-                            <?php echo sprintf($user->getAge()); ?>
-                            <?php echo sprintf('Miembro desde:'); ?>
-                            <?php echo sprintf($memberAt); ?>
+                            <ul>
+                                <li><?php echo sprintf('Bio');?></li>
+                                <li><?php echo sprintf($user->getBio()); ?></li>
+                                <li><?php echo sprintf('Edad');?></li>
+                                <li><?php echo sprintf($user->getAge()); ?></li>
+                                <li><?php echo sprintf('Miembro desde:'); ?></li>
+                                <li><?php echo sprintf($memberAt); ?></li>
+                            </ul>
                         </div>
 
                     </li>
                     <li>
                          <div class="collapsible-header"><?php echo sprintf('Contacto'); ?></div>
                          <div class="collapsible-body">
-                             <?php echo sprintf('Correo electrónico'); ?>
-                            <?php echo sprintf($user->getEmail()); ?>
+                             <ul>
+                                <li>
+                                    <i class="tiny material-icons">email</i>
+                                    <span><?php echo sprintf($user->getEmail()); ?></li></span>
+                             </ul>     
                          </div>
                     </li>
                    
                 </ul>         
                 <ul>
-                    <li><a href="<?php echo $this->url('edit-info',array('nickname' => $user->getNickname()))?>">Editar información básica</a></li>
-                    <li><a href="<?php echo $this->url('add-job')?>">Agregar trabajo</a></li>
-                    <li><a href="<?php echo $this->url('avatar')?>">Agregar avatar</a></li>
+                    <li><a class="teal-text transparent" href="<?php echo $this->url('edit-info',array('nickname' => $user->getNickname()))?>">Editar información básica</a></li>
+                    <li><a class="teal-text transparent" href="<?php echo $this->url('avatar')?>">Agregar avatar</a></li>
                 </ul>
             </div>
           </div>
@@ -48,15 +55,19 @@ $user = $this->member;
             <div class="card-panel">
                 <div class="card-title">
                     <ul class="tabs">
-                        <li class="tab col s3"><a  href="">Educación</a></li>
-                        <li class="tab col s3"><a  href="#career">Experiencia laboral</a></li> 
-                        <li class="tab col s3"><a  href="">Cursos</a></li>
+                        <li class="tab col s3"><a  href="#education">Educación</a></li>
+                        <li class="tab col s3"><a  href="#career">Trabajo</a></li> 
+                        <li class="tab col s3"><a  href="#courses">Cursos</a></li>
                         <li class="tab col s3"><a  href="">Proyectos</a></li> 
                         
                     </ul>
                 </div>
                 <div class=card-content">
                     <div id="career">
+                        <a class="teal-text transparent" href="<?php echo $this->url('add-job')?>">Agregar trabajo</a>
+                        <?php if($this->course==null){ ?>
+                            <br> <?php  echo sprintf('no hay datos para mostrar'); ?> </br>
+                        <?php } else { ?>
                         <table class="responsive-table centered">
                         <thead>
                             <tr>
@@ -68,16 +79,80 @@ $user = $this->member;
                         </thead>
                         <tbody>
                            <?php
+            
                            foreach($this->career as $career){ 
                                ?>  
                             <tr>
                                 <td> <?php  echo sprintf($career['organization']); ?> </td>
                                 <td> <?php  echo sprintf($career['position']); ?> </td>
                                 <td> <?php  echo sprintf($career['job_description']); ?> </td>
-                                <td> <a href="<?php echo $this->url('edit-job',array('jobId' => $career['id']))?>">Editar</a></td>
+                                <td> <?php  echo sprintf($career['career_id']); ?> </td>
+                                <td> <a href="<?php echo $this->url('edit-job',array('jobId' => $career['career_id']))?>">Editar</a></td>
                             </tr>
 
-                            <?php }?>
+                        <?php } }?>
+                        </tbody>
+                    </table>
+                    
+                    </div>
+                    
+                    <div id="courses">
+                        <a class="teal-text transparent" href="<?php echo $this->url('add-course')?>">Crear un curso</a>
+                        <?php if($this->course==null){ ?>
+                            <br> <?php  echo sprintf('no hay datos para mostrar'); ?> </br>
+                        <?php } else { ?>
+                        <table class="responsive-table centered">
+                        <thead>
+                            <tr>
+                                <th width="40%">Curso</th>
+                                <th width="20%">Categoría</th>
+                                <th width="*">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <?php
+                           foreach($this->course as $course){ ?>  
+                            <tr>
+                                <td> <?php  echo sprintf($course['title']); ?> </td>
+                                <td> <?php  echo sprintf($course['name']); ?> </td>
+                                <td> <a href="<?php echo $this->url('edit-course',array('courseId' => $course['course_id']))?>">Editar</a></td>
+                            </tr>
+
+                            <?php } }?>
+                        </tbody>
+                    </table>
+                    
+                    </div>
+                    
+                    <div id="education">
+                        <a class="teal-text transparent" href="<?php echo $this->url('add-education')?>">Agregar educación</a>
+                        <?php if($this->education==null){ ?>
+                            <br> <?php  echo sprintf('no hay datos para mostrar'); ?> </br>
+                        <?php } else { ?>
+                        <table class="responsive-table centered">
+                        <thead>
+                            <tr>
+                                <th width="40%">Carrera</th>
+                                <th width="20%">Escuela</th>
+                                <th width="20%">Especialidad</th>
+                                <th width="*">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <?php
+     
+                           foreach($this->education as $education){ 
+                               
+                               ?>  
+                            <tr>
+                                <td> <?php  echo sprintf($education['career']); ?> </td>
+                                <td> <?php  echo sprintf($education['organization']); ?> </td>
+                                <td> <?php  echo sprintf($education['academic_specialty']); ?> </td>
+                                <td> <?php  echo sprintf($education['education_id']); ?> </td>
+                                                          <td> <a href="<?php echo $this->url('edit-education',array('educationId' => $education['education_id']))?>">Editar</a></td> 
+                                </tr>
+
+                        <?php } }?>
                         </tbody>
                     </table>
                     
