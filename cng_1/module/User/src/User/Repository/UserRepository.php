@@ -5,6 +5,7 @@ namespace User\Repository;
 use Application\Repository\RepositoryInterface;
 use User\Entity\User;
 use User\Entity\Career;
+use User\Entity\Project;
 use User\Entity\Education;
 
 interface UserRepository extends RepositoryInterface
@@ -27,9 +28,25 @@ interface UserRepository extends RepositoryInterface
     
     public function findByNickname($userId);
     
+    /*
+     * Project repository
+     * 
+     */
+    
+    public function addProject(Project $project,$authorId);
+    
+    public function updateProject(Project $project);
+     
+    public function findProjectById($projectId);
+    
+    public function findProjectByUser($authorId);
+    
+    public function fetchProjects($page);
+    
+    public function deleteProject($projectId);
     
     /*
-     * Career repository
+     *Education repository
      * 
      */
     

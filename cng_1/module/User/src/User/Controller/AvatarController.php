@@ -56,7 +56,7 @@ class AvatarController extends AbstractActionController
                     foreach ($adapter->getFileInfo() as $info) {
                       
                         $adapter->addFilter('File\Rename',
-                            array('target' => $adapter->getDestination().'/'.$user->id.'.png',
+                            array('target' => $adapter->getDestination().'/'.$user->nickname.'.png',
                             'overwrite' => true));
 
                         if ($adapter->receive($info['name'])) {
@@ -67,7 +67,7 @@ class AvatarController extends AbstractActionController
                    
                    if ($adapter->receive($File['name'])) {
                         $profile->exchangeArray($form->getData());
-                        echo 'Profile Name '.$profile->profilename.' upload '.$profile->fileupload;
+                        echo 'Profile Name '.$user->nickname.' upload '.$profile->fileupload;
                         
                     }
                 }  

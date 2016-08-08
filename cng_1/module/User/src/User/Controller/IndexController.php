@@ -5,7 +5,9 @@ namespace User\Controller;
 use User\Entity\User;
 use User\Entity\Career;
 use User\Entity\Education;
+use User\Entity\Project;
 use User\Form\Add;
+use User\Form\ProjectForm;
 use User\Form\AddJob;
 use User\Form\AddEducation;
 use User\Form\EditJob;
@@ -104,6 +106,85 @@ class IndexController extends AbstractActionController
      *  Only Admin's role, for now
      */
     public function deleteAction()
+    {
+        
+    }
+    
+    /*
+     * Project options
+     */
+    public function addProjectAction()
+    {
+        $this->layout('layout/user');
+        if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('You must be logged in to add any data on profile');
+            return $this->redirect()->toRoute('user');
+        }
+
+        $form = new ProjectForm();
+        $variables = array('form' => $form);
+
+        if ($this->request->isPost()) {
+            $blogPost = new Project();
+            $form->bind($blogPost);
+            //$form->setInputFilter(new AddJob());
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+                
+                var_dump($blogPost);
+                $this->getUserService()->addProject($blogPost, $user->id);
+                
+                $this->flashMessenger()->addSuccessMessage('El ...');
+            }
+        }
+        
+        return new ViewModel($variables);
+    }
+    
+    public function editProjectAction()
+    {
+        $this->layout('layout/user');
+        $form = new ProjectForm();
+        
+         if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('You must be logged in to add any data on profile');
+            return $this->redirect()->toRoute('user');
+        }
+
+        if ($this->request->isPost()) {
+            $course = new Project();
+            $form->bind($course);
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+                $this->getUserService()->updateProject($course);
+                $this->flashMessenger()->addSuccessMessage('The project has been updated!');
+            }
+        } else {
+            $projectId=$this->params()->fromRoute('projectId');
+            var_dump($projectId);
+            //$course = $this->getUserService()->findCareerById($this->params()->fromRoute('jobId'));
+            //AQUI ME REGRESA NULL
+            $course=$this->getUserService()->findProjectById($projectId);
+            
+            if ($course == null) {
+                var_dump($course);
+            } else {
+                $form->bind($course);
+                $form->get('project_type')->setValue($course->getProjectType());
+                //$form->get('slug')->setValue($course->getSlug());
+                $form->get('id')->setValue($course->getId());
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+        ));
+    
+    }
+    
+    public function deleteProjectAction()
     {
         
     }
@@ -266,23 +347,6 @@ class IndexController extends AbstractActionController
         
     }
     
-     /*
-     * Projects options
-     */
-    public function addProjectAction()
-    {
-        
-    }
-    
-    public function editProjectAction()
-    {
-        
-    }
-    
-    public function deleteProjectAction()
-    {
-        
-    }
 
     /*
      * Authentication actions
@@ -368,6 +432,7 @@ class IndexController extends AbstractActionController
         $member = $this->getUserService()->findByNickname($userId);
         $career=$this->getUserService()->findCareerByUser($member->getId());
         $education=$this->getUserService()->findEducationByUser($member->getId());
+        $project=$this->getUserService()->findProjectByUser($member->getId());
         $course=$this->getCoursesService()->findByUser($member->getId());
 
         if ($member == null) {
@@ -376,7 +441,7 @@ class IndexController extends AbstractActionController
         }
        
         return new ViewModel(array(
-            'member' => $member,'career'=>$career,'education'=>$education,'course'=>$course,
+            'member' => $member,'career'=>$career,'education'=>$education,'project'=>$project,'course'=>$course,
         ));
     }
     

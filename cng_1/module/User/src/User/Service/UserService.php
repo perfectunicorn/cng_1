@@ -4,11 +4,29 @@ namespace User\Service;
 
 use User\Entity\Career;
 use User\Entity\Education;
+use User\Entity\Project;
 use User\Entity\User;
 
 interface UserService
 {
     const GROUP_REGULAR = 1;
+    
+    /*
+     * Project services
+     * 
+     */
+    
+    public function addProject(Project $project,$authorId);
+    
+    public function updateProject(Project $project);
+    
+    public function findProjectById($projectId);
+    
+    public function findProjectByUser($authorId);
+    
+    public function fetchProjects($page);
+    
+    public function deleteProject($projectId);
     
     /*
      * Education services

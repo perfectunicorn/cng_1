@@ -4,6 +4,7 @@ namespace User\Entity\Hydrator;
 
 use User\Entity\Career;
 use User\Entity\Education;
+use User\Entity\Project;
 use User\Entity\User;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
@@ -18,7 +19,7 @@ class AuthorHydrator implements HydratorInterface
      */
     public function extract($object)
     {
-        if (!$object instanceof Career || !$object instanceof Education || $object->getAuthor() == null) {
+        if (!$object instanceof Career || !$object instanceof Education || !$object instanceof Project || $object->getAuthor() == null) {
             return array();
         }
 
@@ -44,7 +45,7 @@ class AuthorHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        if (!$object instanceof Career || !$object instanceof Education || $data['author_id'] == null) {
+        if (!$object instanceof Career || !$object instanceof Education || !$object instanceof Project || $data['author_id'] == null) {
             return $object;
         }
 

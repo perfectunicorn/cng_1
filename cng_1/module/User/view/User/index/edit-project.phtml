@@ -1,0 +1,53 @@
+<h1>Agregar projecto</h1>
+
+<?php
+
+/** @var $form \User\Form\Add */
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+
+?>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('project_name')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('abstract')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('webpage')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('project_type')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('start_date')); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('end_date')); ?>
+</div>
+
+<?php echo $this->formHidden($form->get('id')); ?>
+<?php echo $this->formSubmit($form->get('submit')); ?>
+<?php echo $this->form()->closeTag(); ?>
+<script>
+ $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15, // Creates a dropdown of 15 years to control year
+    format:'yyyy-mm-dd'
+  });
+  </script>
+  
+<script>
+    $(document).ready(function() {
+    $('select').material_select();
+  });
+</script>
+
+  

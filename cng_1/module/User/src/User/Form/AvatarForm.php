@@ -19,7 +19,7 @@ class AvatarForm extends Form
         $this->add(array(
             'name' => 'profilename',
             'attributes' => array(
-                'type'  => 'text',
+                'type'  => 'hidden',
             ),
             'options' => array(
                 'label' => 'Nombre de usuario',

@@ -30,7 +30,7 @@ class EditEducation extends Form
         $degree->setLabel('Grado');
         $degree->setAttribute('class', 'input-field');
         $degree->setValueOptions(array(
-            1 => 'Primaria', 
+            1 => 'Preescolar', 
             2 => 'Primaria',
             3 => 'Secundaria',
             4 => 'Preparatoria',

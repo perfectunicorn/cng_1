@@ -9,13 +9,13 @@ use Zend\InputFilter\InputFilterInterface;
  
 class Avatar implements InputFilterAwareInterface
 {
-    public $profilename;
+    //public $profilename;
     public $fileupload;
     protected $inputFilter;
      
     public function exchangeArray($data)
     {
-        $this->profilename  = (isset($data['profilename']))  ? $data['profilename']     : null; 
+       // $this->profilename  = (isset($data['profilename']))  ? $data['profilename']     : null; 
         $this->fileupload  = (isset($data['fileupload']))  ? $data['fileupload']     : null; 
     } 
      
@@ -30,7 +30,7 @@ class Avatar implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
             $factory     = new InputFactory();
               
-            $inputFilter->add(
+            /*$inputFilter->add(
                 $factory->createInput(array(
                     'name'     => 'profilename',
                     'required' => true,
@@ -49,7 +49,7 @@ class Avatar implements InputFilterAwareInterface
                         ),
                     ),
                 ))
-            );
+            );*/
              
             $inputFilter->add(
                 $factory->createInput(array(

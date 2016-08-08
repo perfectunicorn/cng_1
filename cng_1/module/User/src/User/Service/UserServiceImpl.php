@@ -5,6 +5,7 @@ namespace User\Service;
 use User\Entity\User;
 use User\Entity\Career;
 use User\Entity\Education;
+use User\Entity\Project;
 use Zend\Authentication\AuthenticationService;
 
 class UserServiceImpl implements UserService
@@ -44,6 +45,41 @@ class UserServiceImpl implements UserService
     public function findByNickname($userId)
     {
         return $this->userRepository->findByNickname($userId);
+    }
+    
+    /*
+     * Project services implementation
+     * 
+     */
+    
+    public function addProject(Project $project,$authorId)
+    {
+       $this->userRepository->addProject($project,$authorId); 
+    }
+    
+    public function updateProject(Project $project)
+    {
+        $this->userRepository->updateProject($project); 
+    }
+     
+    public function findProjectById($projectId)
+    {
+        return $this->userRepository->findProjectById($projectId); 
+    }
+    
+    public function findProjectByUser($authorId)
+    {
+        return $this->userRepository->findProjectByUser($authorId);
+    }
+    
+    public function fetchProjects($page)
+    {
+        $this->userRepository->fetchProjects($page);
+    }
+    
+    public function deleteProject($projectId)
+    {
+        $this->userRepository->deleteProject($projectId);
     }
     
     

@@ -11,8 +11,8 @@ $user = $this->member;
 
       <div class="row">
         <div class="col s12 m4">
-          <div class="card-panel z-depth-1">
-                <center><img class="circle responsive-img" width="200" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->getId().'.png')?>">
+          <div class="card-panel z-depth-1" >
+              <center><img class="circle responsive-img"  width="200" height="200" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->getNickname().'.png')?>">
                 <h4>
                     <p class="card-title"><?php echo sprintf($user->getFirstName().' '.$user->getLastName());?></p>
                 </h4>
@@ -56,16 +56,51 @@ $user = $this->member;
                 <div class="card-title">
                     <ul class="tabs">
                         <li class="tab col s3"><a  href="#education">Educación</a></li>
-                        <li class="tab col s3"><a  href="#career">Trabajo</a></li> 
+                        <li class="tab col s3"><a  href="#career">Trabajo</a></li>
+                        <li class="tab col s3"><a  href="#project">Proyectos</a></li> 
                         <li class="tab col s3"><a  href="#courses">Cursos</a></li>
-                        <li class="tab col s3"><a  href="">Proyectos</a></li> 
+                        
                         
                     </ul>
                 </div>
                 <div class=card-content">
+                    
+                         <div id="project">
+                        <a class="teal-text transparent" href="<?php echo $this->url('add-project')?>">Agregar proyecto</a>
+                        <?php if($this->project==null){ ?>
+                            <br> <?php  echo sprintf('no hay datos para mostrar'); ?> </br>
+                        <?php } else { ?>
+                        <table class="responsive-table centered">
+                        <thead>
+                            <tr>
+                                <th width="40%">Nombre de proyecto</th>
+                                <th width="10%">Tipo de proyecto</th>
+                                <th width="30%">Página Web</th>
+                                <th width="*">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <?php
+            
+                           foreach($this->project as $project){ 
+                               ?>  
+                            <tr>
+                                <td> <?php  echo sprintf($project['project_name']); ?> </td>
+                                <td> <?php  echo sprintf($project['project_type']); ?> </td>
+                                <td> <?php  echo sprintf($project['webpage']); ?> </td>
+                                <td> <?php  echo sprintf($project['project_id']); ?> </td>
+                                <td> <a href="<?php echo $this->url('edit-project',array('projectId' => $project['project_id']))?>">Editar</a></td>
+                            </tr>
+
+                        <?php } }?>
+                        </tbody>
+                    </table>
+                    
+                    </div>
+                    
                     <div id="career">
                         <a class="teal-text transparent" href="<?php echo $this->url('add-job')?>">Agregar trabajo</a>
-                        <?php if($this->course==null){ ?>
+                        <?php if($this->career==null){ ?>
                             <br> <?php  echo sprintf('no hay datos para mostrar'); ?> </br>
                         <?php } else { ?>
                         <table class="responsive-table centered">

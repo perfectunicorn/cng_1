@@ -5,7 +5,9 @@ namespace User\Repository;
 use User\Entity\User;
 use User\Entity\Career;
 use User\Entity\Education;
+use User\Entity\Project;
 use User\Entity\Hydrator\UserHydrator;
+use User\Entity\Hydrator\ProjectHydrator;
 use User\Entity\Hydrator\EducationHydrator;
 use User\Entity\Hydrator\DegreeHydrator;
 use User\Entity\Hydrator\AuthorHydrator;
@@ -173,8 +175,161 @@ class UserRepositoryImpl implements UserRepository
         return ($resultSet->count() > 0 ? $resultSet->current() : null);
     }
     
+     /*
+     * Project repository methods
+     * 
+     */
+    
+    public function addProject(Project $project,$authorId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->insert()
+            ->values(array(
+                'project_name' => $project->getProjectName(),
+                'abstract' => $project->getAbstract(),
+                'webpage' => $project->getWebpage(),
+                'project_type' => $project->getProjectType(),
+                'start_date' => $project->getStartDate(),
+                'end_date' => $project->getEndDate(),
+                'created' => time(),
+                'author_id' => $authorId,
+            ))
+            ->into('project');
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute();
+    }
+    
+    public function updateProject(Project $project)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->update('project')
+            ->set(array(
+                'project_name' => $project->getProjectName(),
+                'abstract' => $project->getAbstract(),
+                'webpage' => $project->getWebpage(),
+                'project_type' => $project->getProjectType(),
+                'start_date' => $project->getStartDate(),
+                'end_date' => $project->getEndDate(),
+            ))
+            ->where(array(
+                'id' => $project->getId(),
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement->execute(); 
+    }
+     
+    public function findProjectById($projectId)
+    {
+        
+       $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'project_name',
+            'abstract',
+            'webpage',
+            'project_type',
+            'start_date',
+            'end_date',
+            'created',
+        ))
+            ->from(array('p' => 'project'))
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.author_id',
+                array(
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )
+            ->where(array(
+                'p.id' => $projectId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new AuthorHydrator());
+        $hydrator->add(new ProjectHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Project());
+        $resultSet->initialize($results);
+        var_dump($resultSet->current());
+
+        
+       return ($resultSet->count() > 0 ? $resultSet->current() : null);
+        
+    }
+    
+    
+        public function findProjectByUser($authorId)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $select = $sql->select();
+        $select->columns(array(
+            'id',
+            'project_name',
+            'abstract',
+            'webpage',
+            'project_type',
+            'start_date',
+            'end_date',
+            'created',
+        ))
+            ->from(array('p' => 'project'))
+            ->join(
+                array('a' => 'user'),
+                'a.id = p.author_id',
+                array(
+                    'author_id' => 'id',
+                    'author_first_name' => 'first_name',
+                    'author_last_name' => 'last_name',
+                    'author_email' => 'email',
+                    'author_created' => 'created',
+                    'author_user_group' => 'user_group',
+                ),
+                $select::JOIN_LEFT
+            )
+            ->where(array(
+                'p.author_id' => $authorId,
+            ));
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new AuthorHydrator());
+        $hydrator->add(new ProjectHydrator());
+
+        $resultSet = new HydratingResultSet($hydrator, new Project());
+        $resultSet->initialize($results);
+       // var_dump($resultSet->current());
+
+        
+       return ($resultSet->count() > 0 ? $resultSet->toArray() : null);
+        
+    }
+    
+    public function fetchProjects($page)
+    {
+        $this->userRepository->fetchProjects($page);
+    }
+    
+    public function deleteProject($projectId)
+    {
+        $this->userRepository->deleteProject($projectId);
+    }
+
     /*
-     * Education repository's methods
+     * Education repository methods
      * 
      */
     

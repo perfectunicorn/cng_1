@@ -73,8 +73,8 @@
                                 <?php if ($user != null) : ?>
                                     <li>
                                         <div>    
-                                        <a class="teal-text" href="<?php echo $this->url('profile', array('nickname' => $user->nickname)); ?>">
-                                                <img class="circle responsive-img" data-activates="aligncenter" width="30" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->id.'.png')?>">  
+                                            <a class="teal-text" href="<?php echo $this->url('profile', array('nickname' => $user->nickname)); ?>">
+                                            <img class="circle" data-activates="aligncenter" width="30" height="30" onerror="this.src='<?php echo $this->basePath('img/profile/profile-pic.jpeg')?>';" src="<?php echo $this->basePath('img/profile/'.$user->nickname.'.png')?>">  
                                                 <span><?php echo ($user->first_name); ?></span>
                                             </a>
                                         </div>

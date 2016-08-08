@@ -188,6 +188,17 @@ return array(
                 ),
             ),
             
+            'add-project' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/add-project',
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'addProject',
+                    ),
+                ),
+            ),
+            
              'edit-job' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -216,7 +227,7 @@ return array(
                 ),
             ),
             
-             'edit-course' => array(
+            'edit-course' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/edit-course/:courseId',
@@ -226,6 +237,20 @@ return array(
                     'defaults' => array(
                         'controller' => 'Courses\Controller\Index',
                         'action' => 'edit',
+                    ),
+                ),
+            ),
+            
+            'edit-project' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/edit-project/:projectId',
+                    'constraints' => array(
+                        'projectId' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User\Controller\Index',
+                        'action' => 'editProject',
                     ),
                 ),
             ),
