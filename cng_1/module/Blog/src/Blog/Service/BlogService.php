@@ -3,17 +3,11 @@
 namespace Blog\Service;
 
 use Blog\Entity\Post;
+use Blog\Entity\Comment;
 
 interface BlogService
 {
-    /**
-     * Saves a blog post
-     *
-     * @param Post $post
-     * @param int $authorId
-     *
-     * @return Post
-     */
+    
     public function save(Post $post, $authorId);
 
     /**
@@ -51,4 +45,20 @@ interface BlogService
      * @return void
      */
     public function delete($postId);
+    
+    
+    /*
+     * Comments service
+     * 
+     */
+    
+    public function saveComment(Comment $comment, $authorId,$postId);
+    
+    public function deleteComment($commentId);
+    
+    public function findCommentById($commentId);
+    
+    public function findCommentsByPost($postId,$page);
+    
+
 } 

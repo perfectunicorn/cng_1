@@ -1,6 +1,7 @@
 <?php $this->headLink()->appendStylesheet('/css/blog/index/index.css'); ?>
 
 <?php if (!empty($this->paginator)) : ?>
+
     <div id="blog-posts">
         <?php foreach ($this->paginator as $post) : ?>
             <?php /** @var \Blog\Entity\Post $post */ ?>

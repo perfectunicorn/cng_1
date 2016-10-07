@@ -1,10 +1,10 @@
 <?php
-
+//
 namespace Blog\Repository;
 
 use Application\Repository\RepositoryInterface;
 use Blog\Entity\Post;
-
+use Blog\Entity\Comment;
 interface PostRepository extends RepositoryInterface
 {
     /**
@@ -52,4 +52,13 @@ interface PostRepository extends RepositoryInterface
      * @return void
      */
     public function delete($postId);
+    
+    
+    public function saveComment(Comment $comment, $authorId,$postId);
+    
+    public function deleteComment($commentId);
+    
+    public function findCommentById($commentId);
+    
+    public function findCommentsByPost($postId,$page);
 }

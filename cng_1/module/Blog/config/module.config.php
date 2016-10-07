@@ -1,5 +1,5 @@
 <?php
-
+//
 namespace Blog;
 
 return array(
@@ -51,6 +51,29 @@ return array(
                 ),
             ),
 
+            
+            'add-post' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/blog/add',
+                    'defaults' => array(
+                        'controller' => 'Blog\Controller\Index',
+                        'action' => 'add',
+                    ),
+                ),
+            ),
+            
+             'add-comment' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/blog/add-comment',
+                    'defaults' => array(
+                        'controller' => 'Blog\Controller\Index',
+                        'action' => 'addComment',
+                    ),
+                ),
+            ),
+            
             'display-post' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -62,16 +85,18 @@ return array(
                     'defaults' => array(
                         'controller' => 'Blog\Controller\Index',
                         'action' => 'viewPost',
+                        'page'          => 1,
                     ),
                 ),
             ),
 
-            'edit' => array(
+            'edit-post' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/blog/edit/:postId',
+                    'route' => '/blog/edit/:categorySlug/:postSlug',
                     'constraints' => array(
-                        'postId' => '[0-9]+',
+                        'categorySlug' => '[a-zA-Z0-9-]+',
+                        'postSlug' => '[a-zA-Z0-9-]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Blog\Controller\Index',
@@ -80,12 +105,12 @@ return array(
                 ),
             ),
 
-            'delete' => array(
+            'delete-post' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/blog/delete/:postId',
                     'constraints' => array(
-                        'postId' => '[0-9]+',
+                        'postId' => '[0-9]+', 
                     ),
                     'defaults' => array(
                         'controller' => 'Blog\Controller\Index',
@@ -93,6 +118,8 @@ return array(
                     ),
                 ),
             ),
+            
+   
         ),
     ),
 

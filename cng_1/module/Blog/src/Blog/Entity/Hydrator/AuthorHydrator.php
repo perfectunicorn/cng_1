@@ -8,13 +8,7 @@ use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class AuthorHydrator implements HydratorInterface
 {
-    /**
-     * Extract values from an object
-     *
-     * @param  object $object
-     *
-     * @return array
-     */
+    
     public function extract($object)
     {
         if (!$object instanceof Post || $object->getAuthor() == null) {
@@ -22,6 +16,8 @@ class AuthorHydrator implements HydratorInterface
         }
 
         $author = $object->getAuthor();
+        
+        
 
         return array(
             'id' => $author->getId(),
@@ -30,6 +26,7 @@ class AuthorHydrator implements HydratorInterface
             'email' => $author->getEmail(),
             'created' => $author->getCreated(),
             'userGroup' => $author->getUserGroup(),
+            'nickname'=>$author->getNickname(),
         );
     }
 
@@ -54,8 +51,9 @@ class AuthorHydrator implements HydratorInterface
         $author->setEmail(isset($data['author_email']) ? $data['author_email'] : null);
         $author->setCreated(isset($data['author_created']) ? $data['author_created'] : null);
         $author->setUserGroup(isset($data['author_user_group']) ? $data['author_user_group'] : null);
+         $author->setNickname(isset($data['nickname']) ? $data['nickname'] : null);
         $object->setAuthor($author);
-
+        //var_dump($object);
         return $object;
     }
 }

@@ -1,16 +1,15 @@
 <?php
-
+//
 namespace Blog\Controller;
 
-use Blog\Entity\Hydrator\CategoryHydrator;
-use Blog\Entity\Hydrator\PostHydrator;
 use Blog\Entity\Post;
+use Blog\Entity\Comment;
 use Blog\Form\Add;
 use Blog\Form\Edit;
+use Blog\Form\CommentsForm;
 use Blog\InputFilter\AddPost;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Stdlib\Hydrator\Aggregate\AggregateHydrator;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
@@ -49,18 +48,46 @@ class IndexController extends AbstractActionController
 
     public function viewPostAction()
     {
+        
+         if (!$user = $this->identity()) {
+            $this->flashMessenger()->addErrorMessage('You must be logged in to view blog');
+            return $this->redirect()->toRoute('blog');
+        }
+        
         $categorySlug = $this->params()->fromRoute('categorySlug');
         $postSlug = $this->params()->fromRoute('postSlug');
         $post = $this->getBlogService()->find($categorySlug, $postSlug);
 
+        $form=new CommentsForm();
+        
+
         if ($post == null) {
+         
             $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
         }
+     
+        if ($this->request->isPost()) {
+            $blogPost = new Comment();
+            $form->bind($blogPost);
+
+            $form->setData($this->request->getPost());
+
+            if ($form->isValid()) {
+ 
+                $this->getBlogService()->saveComment($blogPost, $user->id,$post->getId());
+                $this->flashMessenger()->addSuccessMessage('The comment has been added!');
+            }
+        }
+
+        $paginator=$this->getBlogService()->findCommentsByPost($post->getId(),$this->params()->fromRoute('page'));
 
         return new ViewModel(array(
             'post' => $post,
+            'form' => $form,
+            'paginator' => $paginator,
         ));
     }
+
 
     public function editAction()
     {
@@ -76,7 +103,9 @@ class IndexController extends AbstractActionController
                 $this->flashMessenger()->addSuccessMessage('The post has been updated!');
             }
         } else {
-            $post = $this->getBlogService()->findById($this->params()->fromRoute('postId'));
+             $categorySlug = $this->params()->fromRoute('categorySlug');
+             $postSlug = $this->params()->fromRoute('postSlug');
+             $post = $this->getBlogService()->find($categorySlug, $postSlug);
 
             if ($post == null) {
                 $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
@@ -100,9 +129,7 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toRoute('blog');
     }
 
-    /**
-     * @return \Blog\Service\BlogService $blogService
-     */
+    
     protected function getBlogService()
     {
         return $this->getServiceLocator()->get('Blog\Service\BlogService');

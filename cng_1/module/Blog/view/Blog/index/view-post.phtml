@@ -1,7 +1,15 @@
 <?php $this->headLink()->appendStylesheet('/css/blog/index/view-post.css'); ?>
 
-<?php /** @var \Blog\Entity\Post $post */ ?>
-<?php $post = $this->post; ?>
+
+<?php 
+
+$post = $this->post; 
+$form=$this->form;
+
+$form->setAttribute('action', $this->url('display-post', array('categorySlug' => $post->getCategory()->getSlug(), 'postSlug' => $post->getSlug())));
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
 
 <?php $postedAt = $this->dateFormat(
     $post->getCreated(),
@@ -18,13 +26,84 @@
             <?php echo sprintf($this->translate('Posted on %s'), $postedAt); ?> |
 
             <?php if ($author = $post->getAuthor()) : ?>
-                <?php echo sprintf($this->translate('Written by %s'), $author->getFirstName() . ' ' . $author->getLastName()); ?> |
+                <?php echo sprintf($this->translate('Written by %s'), $author->getNickname().''.$author->getFirstName() . ' ' . $author->getLastName()); ?> |
             <?php endif; ?>
+                
             <?php echo $this->escapeHtml($post->getCategory()->getName()); ?> |
-            <a href="<?php echo $this->url('edit', array('postId' => $post->getId())); ?>">edit</a> |
-            <a href="<?php echo $this->url('delete', array('postId' => $post->getId())); ?>">delete</a>
+            <a href="<?php echo $this->url('edit-post', array('categorySlug' => $post->getCategory()->getSlug(), 'postSlug' => $post->getSlug())); ?>"> Edit</a> |
+            <a href="<?php //echo $this->url('delete-post', array('postId' => $post->getId())); ?>">delete</a>
         </div>
         
         <p><?php echo nl2br($this->escapeHtml($post->getContent())); ?></p>
     </div>
+    
+     <div class="add-comment">
+        <div class="form-group">
+            <?php echo $this->formRow($form->get('comment')); ?>
+        </div>
+
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+        <?php echo $this->form()->closeTag(); ?>
+
+    </div>
 </div>
+<div class="post-comments"> 
+       
+    <?php if (!empty($this->paginator)) : ?>
+
+    <div id="blog-posts">
+        <?php foreach ($this->paginator as $comment) :
+             
+        ?>
+            <?php /** @var \Blog\Entity\Post $post */ ?>
+            <?php $postedAt = $this->dateFormat(
+                $comment->getCreated(),
+                IntlDateFormatter::MEDIUM, // Date
+                IntlDateFormatter::MEDIUM, // Time
+                'en_US'
+            ); ?>
+
+            <div class="blog-post">
+
+                <div class="posted-at">
+
+                    <?php if ($author = $comment->getAuthor()) : 
+                        
+                     ?>
+                    
+                    <a href="<?php echo $this->url('profile', array('nickname' => $author->getNickname())); ?>">
+                        <?php echo sprintf($author->getFirstName() . ' ' . $author->getLastName()); ?>
+                    </a>
+                    
+                    <?php echo sprintf('Fecha del comentario ' .$postedAt); ?>
+                   
+
+                    <?php endif; ?>
+                </div>
+
+                <p class="excerpt">
+                    <?php echo nl2br($this->escapeHtml($comment->getComment())); ?>
+                </p>
+
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="pagination-wrapper">
+        <?php
+
+        /*echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'partial/pagination',
+            array('route' => 'blog/paged'));*/
+
+        ?>
+    </div>
+
+<?php else : ?>
+    <p><?php echo $this->translate('Actualmente no hay comentarios'); ?></p>
+<?php endif; ?>
+       
+</div>
+
+

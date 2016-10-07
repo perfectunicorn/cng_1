@@ -3,12 +3,11 @@
 namespace Blog\Service;
 
 use Blog\Entity\Post;
+use Blog\Entity\Comment;
 
 class BlogServiceImpl implements BlogService
 {
-    /**
-     * @var \Blog\Repository\PostRepository $postRepository
-     */
+    
     protected $postRepository;
 
 
@@ -75,6 +74,33 @@ class BlogServiceImpl implements BlogService
     {
         $this->postRepository->delete($postId);
     }
+    
+    
+    /*
+     * Comments service
+     * 
+     */
+    
+    public function saveComment(Comment $comment, $authorId,$postId)
+    {
+        $this->postRepository->saveComment($comment, $authorId,$postId);
+    }
+    
+    public function deleteComment($commentId)
+    {
+        $this->postRepository->deleteComment($commentId);
+    }
+    
+    public function findCommentById($commentId)
+    {
+        return $this->postRepository->findCommentById($commentId);
+    }
+    
+    public function findCommentsByPost($postId,$page)
+    {
+        return $this->postRepository->findCommentsByPost($postId,$page);
+    }
+    
 
     /**
      * @param \Blog\Repository\PostRepository $postRepository
